@@ -18,6 +18,7 @@ public class CC_brain {
     static int debug = 0;
 
     private static CardTerminal terminal;
+    private static String roomCode = "4.2.11";
 
     private static void init() {
         try {

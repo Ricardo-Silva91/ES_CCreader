@@ -59,6 +59,8 @@ public class CC_brain {
 
         init();
 
+        System.err.println(System.getProperty("os.name"));     
+        
         do {
             try {
 
@@ -82,6 +84,7 @@ public class CC_brain {
                 //int errorNumber = Integer.parseInt(ex.getMessage().split("Error code : -")[1]);
                 System.out.println("\n\nSmartcardio Exception.");
                 //Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+                flag=1;
             }
 
         } while (flag == 0);

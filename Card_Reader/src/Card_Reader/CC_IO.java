@@ -20,8 +20,18 @@ public class CC_IO {
 
     static {
         try {
+            
+            if(System.getProperty("os.name").split(" ")[0].equals("Windows"))
+            {
+                System.loadLibrary("pteidlibj");
+            }
+            else if(System.getProperty("os.name").split(" ")[0].equals("Linux"))
+            {
+                System.load("/home/rofler/libpteidlibj.so");
+            }
+            
             //System.load("/home/rofler/libpteidlibj.so");
-            System.loadLibrary("pteidlibj");
+            
         } catch (UnsatisfiedLinkError e) {
             System.err.println("Não foi possivel carregar a biblioteca.\n" + e);
             System.exit(1);

@@ -60,7 +60,9 @@ public class CC_brain {
 
         init();
 
-        System.err.println(System.getProperty("os.name"));     
+        //System.err.println(System.getProperty("os.name"));     
+        //System.err.println(System.getProperty("os.name").split(" ")[0].equals("Windows"));
+        
         
         do {
             try {

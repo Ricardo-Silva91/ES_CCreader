@@ -20,7 +20,10 @@ public class CC_brain {
     private static CardTerminal terminal;
     private static String roomCode = "4.2.11";
 
-    private static void init() {
+    private static int init() {
+
+        int res = 0;
+
         try {
             TerminalFactory tf = TerminalFactory.getDefault();
             CardTerminals ct = tf.terminals();
@@ -47,9 +50,12 @@ public class CC_brain {
         } catch (CardException ex) {
             System.out.println(ex.getMessage());
             //int errorNumber = Integer.parseInt(ex.getMessage().split("Error code : -")[1]);
-            System.out.println("\n\nSmartcardio Exception.");
+            System.out.println("Smartcardio Exception.");
             //Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+            res = 1;
         }
+
+        return res;
     }
 
     public static void main(String[] args) {
@@ -58,13 +64,11 @@ public class CC_brain {
 
         CC_IO ccIO = new CC_IO();
 
-        init();
+        flag = init();
 
         //System.err.println(System.getProperty("os.name"));     
         //System.err.println(System.getProperty("os.name").split(" ")[0].equals("Windows"));
-        
-        
-        do {
+        while(flag==0) {
             try {
 
                 //wait for card to be inserted
@@ -73,24 +77,24 @@ public class CC_brain {
 
                 //get data
                 ccIO.RunAnalisys();
-                
+
                 //send data for logging
                 //...
-                
                 //wait for card to be removed before resuming action
                 System.out.println("Please remove card");
                 while (terminal.isCardPresent() == true);
-                
 
             } catch (CardException ex) {
                 System.out.println(ex.getMessage());
                 //int errorNumber = Integer.parseInt(ex.getMessage().split("Error code : -")[1]);
                 System.out.println("\n\nSmartcardio Exception.");
                 //Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
-                flag=1;
+                flag = 1;
             }
 
-        } while (flag == 0);
+        }
+        
+        System.out.println("\n\nProgram is Terminating.");
 
     }
 

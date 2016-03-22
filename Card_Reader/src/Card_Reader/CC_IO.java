@@ -27,7 +27,7 @@ public class CC_IO {
             }
             else if(System.getProperty("os.name").split(" ")[0].equals("Linux"))
             {
-                System.load("/home/rofler/libpteidlibj.so");
+                System.load("/usr/lib/pteid_jni/libpteidlibj.so.1.60.0");
             }
             
             //System.load("/home/rofler/libpteidlibj.so");

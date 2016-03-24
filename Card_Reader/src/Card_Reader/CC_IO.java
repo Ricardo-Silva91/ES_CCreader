@@ -109,8 +109,10 @@ public class CC_IO {
         }
     }
 
-    public void RunAnalisys() {
+    public CardData RunAnalisys() {
 
+        CardData xpto = null;
+        
         try {
             pteid.Init("");
 
@@ -145,9 +147,10 @@ public class CC_IO {
             pteidlib.PTEID_ID idData = pteidlib.pteid.GetID();
 
             if (null != idData) {
-                System.out.println("Dados de identificação:");
+                //System.out.println("Dados de identificação:");
                 //PrintIDData(idData);
-                CardData xpto = GetIDData(idData);
+                xpto = GetIDData(idData);
+                xpto.sendToJsonFile("current_card.json");
             }
             /*
             // Leitura de dados da zona privada do cartao - ECF#7 
@@ -191,6 +194,9 @@ public class CC_IO {
             // Leitura do SOD do cartao - ECF#15
             //System.out.println("SOD: " + new String(pteidlib.pteid.ReadSOD()));
             pteidlib.pteid.Exit(pteidlib.pteid.PTEID_EXIT_LEAVE_CARD);
+            
+            
+            
         } catch (pteidlib.PteidException ex) {
             System.out.println(ex.getMessage());
             int errorNumber = Integer.parseInt(ex.getMessage().split("Error code : -")[1]);
@@ -213,6 +219,7 @@ public class CC_IO {
             }
             ex.printStackTrace();
         }
+     return xpto;
     }
 
 }

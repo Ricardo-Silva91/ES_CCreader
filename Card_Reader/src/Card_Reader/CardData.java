@@ -5,12 +5,20 @@
  */
 package Card_Reader;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.*;
+
 /**
  *
  * @author Ricardo
  */
 public class CardData {
-    
+
     private String firstname;
     private String lastname;
     private String birthDate;
@@ -170,7 +178,90 @@ public class CardData {
     public String getNotes() {
         return notes;
     }
+
+    public void sendToJsonFile(String outFile) {
+        JSONObject obj = new JSONObject();
+
+        obj.put("birthDate", this.birthDate);
+        obj.put("cardNumber", this.cardNumber);
+        obj.put("cardNumberPAN", this.cardNumberPAN);
+        obj.put("cardVersion", this.cardVersion);
+        obj.put("country", this.country);
+        obj.put("deliveryDate", this.deliveryDate);
+        obj.put("deliveryEntity", this.deliveryEntity);
+        obj.put("documentType", this.documentType);
+        obj.put("firstname", this.firstname);
+        obj.put("firstnameFather", this.firstnameFather);
+        obj.put("firstnameMother", this.firstnameMother);
+        obj.put("height", this.height);
+        obj.put("lastname", this.lastname);
+        obj.put("lastnameFather", this.lastnameFather);
+        obj.put("lastnameMother", this.lastnameMother);
+        obj.put("locale", this.locale);
+        obj.put("mrz1", this.mrz1);
+        obj.put("mrz2", this.mrz2);
+        obj.put("mrz3", this.mrz3);
+        obj.put("nationality", this.nationality);
+        obj.put("notes", this.notes);
+        obj.put("numBI", this.numBI);
+        obj.put("numNIF", this.numNIF);
+        obj.put("numSNS", this.numSNS);
+        obj.put("numSS", this.numSS);
+        obj.put("sex", this.sex);
+
+        //System.out.println(obj);
+        try {
+            File fout = new File(outFile);
+            FileOutputStream fouts = new FileOutputStream(fout);
+            fouts.write(obj.toString().getBytes());
+            fouts.close();
+            
+        } catch (FileNotFoundException ex) {
+            System.err.println("Error: File not Found!");
+            ex.printStackTrace();
+            //Logger.getLogger(CardData.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.err.println("Error: can't wirte to file!");
+            ex.printStackTrace();
+            //Logger.getLogger(CardData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
     
     
-    
+    public String getJson(String roomCode, String interactionType) {
+        JSONObject obj = new JSONObject();
+
+        obj.put("interaction", interactionType);
+        obj.put("roomCode", roomCode);
+        obj.put("birthDate", this.birthDate);
+        obj.put("cardNumber", this.cardNumber);
+        obj.put("cardNumberPAN", this.cardNumberPAN);
+        obj.put("cardVersion", this.cardVersion);
+        obj.put("country", this.country);
+        obj.put("deliveryDate", this.deliveryDate);
+        obj.put("deliveryEntity", this.deliveryEntity);
+        obj.put("documentType", this.documentType);
+        obj.put("firstname", this.firstname);
+        obj.put("firstnameFather", this.firstnameFather);
+        obj.put("firstnameMother", this.firstnameMother);
+        obj.put("height", this.height);
+        obj.put("lastname", this.lastname);
+        obj.put("lastnameFather", this.lastnameFather);
+        obj.put("lastnameMother", this.lastnameMother);
+        obj.put("locale", this.locale);
+        obj.put("mrz1", this.mrz1);
+        obj.put("mrz2", this.mrz2);
+        obj.put("mrz3", this.mrz3);
+        obj.put("nationality", this.nationality);
+        obj.put("notes", this.notes);
+        obj.put("numBI", this.numBI);
+        obj.put("numNIF", this.numNIF);
+        obj.put("numSNS", this.numSNS);
+        obj.put("numSS", this.numSS);
+        obj.put("sex", this.sex);
+     
+        return obj.toString();
+    }
+
 }

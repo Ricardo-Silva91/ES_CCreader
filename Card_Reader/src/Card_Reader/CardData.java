@@ -209,7 +209,7 @@ public class CardData {
         obj.put("numSS", this.numSS);
         obj.put("sex", this.sex);
 
-        //System.out.println(obj);
+        //System.out.println(card_js);
         try {
             File fout = new File(outFile);
             FileOutputStream fouts = new FileOutputStream(fout);
@@ -230,38 +230,45 @@ public class CardData {
     
     
     public String getJson(String roomCode, String interactionType) {
-        JSONObject obj = new JSONObject();
-
-        obj.put("interaction", interactionType);
-        obj.put("roomCode", roomCode);
-        obj.put("birthDate", this.birthDate);
-        obj.put("cardNumber", this.cardNumber);
-        obj.put("cardNumberPAN", this.cardNumberPAN);
-        obj.put("cardVersion", this.cardVersion);
-        obj.put("country", this.country);
-        obj.put("deliveryDate", this.deliveryDate);
-        obj.put("deliveryEntity", this.deliveryEntity);
-        obj.put("documentType", this.documentType);
-        obj.put("firstname", this.firstname);
-        obj.put("firstnameFather", this.firstnameFather);
-        obj.put("firstnameMother", this.firstnameMother);
-        obj.put("height", this.height);
-        obj.put("lastname", this.lastname);
-        obj.put("lastnameFather", this.lastnameFather);
-        obj.put("lastnameMother", this.lastnameMother);
-        obj.put("locale", this.locale);
-        obj.put("mrz1", this.mrz1);
-        obj.put("mrz2", this.mrz2);
-        obj.put("mrz3", this.mrz3);
-        obj.put("nationality", this.nationality);
-        obj.put("notes", this.notes);
-        obj.put("numBI", this.numBI);
-        obj.put("numNIF", this.numNIF);
-        obj.put("numSNS", this.numSNS);
-        obj.put("numSS", this.numSS);
-        obj.put("sex", this.sex);
-     
-        return obj.toString();
+        JSONObject card_js = new JSONObject();
+        JSONObject interaction_js = new JSONObject();
+        JSONObject final_js = new JSONObject();
+               
+        interaction_js.put("interaction", interactionType);
+        interaction_js.put("roomCode", roomCode);
+        interaction_js.put("time", System.currentTimeMillis());
+        
+        card_js.put("birthDate", this.birthDate);
+        card_js.put("cardNumber", this.cardNumber);
+        card_js.put("cardNumberPAN", this.cardNumberPAN);
+        card_js.put("cardVersion", this.cardVersion);
+        card_js.put("country", this.country);
+        card_js.put("deliveryDate", this.deliveryDate);
+        card_js.put("deliveryEntity", this.deliveryEntity);
+        card_js.put("documentType", this.documentType);
+        card_js.put("firstname", this.firstname);
+        card_js.put("firstnameFather", this.firstnameFather);
+        card_js.put("firstnameMother", this.firstnameMother);
+        card_js.put("height", this.height);
+        card_js.put("lastname", this.lastname);
+        card_js.put("lastnameFather", this.lastnameFather);
+        card_js.put("lastnameMother", this.lastnameMother);
+        card_js.put("locale", this.locale);
+        card_js.put("mrz1", this.mrz1);
+        card_js.put("mrz2", this.mrz2);
+        card_js.put("mrz3", this.mrz3);
+        card_js.put("nationality", this.nationality);
+        card_js.put("notes", this.notes);
+        card_js.put("numBI", this.numBI);
+        card_js.put("numNIF", this.numNIF);
+        card_js.put("numSNS", this.numSNS);
+        card_js.put("numSS", this.numSS);
+        card_js.put("sex", this.sex);
+        
+        final_js.put("person_info", card_js);
+        final_js.put("interaction_info", interaction_js);
+        
+        return final_js.toString();
     }
 
 }

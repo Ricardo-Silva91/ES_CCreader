@@ -90,7 +90,7 @@ public class CC_brain {
                 CardData card = ccIO.RunAnalisys();
 
                 //send data for logging (card inserted)
-                System.out.println("Sending to server (card inserted)");
+                System.out.println("Sending to server (card inserted)");                
                 int error = 0;//sendToServer(card, "inserted");
                 if (error != 0 ){
                     System.err.println("Server Connection Error");                

@@ -1,7 +1,7 @@
 CREATE TABLE person(
 country VARCHAR(20) NOT NULL,
 firstname VARCHAR(50) NOT NULL,
-notes VARCHAR(500) NOT NULL,
+notes VARCHAR(501) NOT NULL,
 documentType VARCHAR(50) NOT NULL,
 cardVersion VARCHAR(50) NOT NULL,
 numBI INT NOT NULL,
@@ -31,7 +31,7 @@ PRIMARY KEY (numBI));
 CREATE TABLE interaction(
 interaction VARCHAR(20) NOT NULL,
 roomCode VARCHAR(20) NOT NULL,
-time INT(11) NOT NULL,
+time BIGINT NOT NULL,
 person_id INT NOT NULL,
 PRIMARY KEY (time),
 INDEX person_idx (person_id),

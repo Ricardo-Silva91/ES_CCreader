@@ -33,8 +33,7 @@ interaction VARCHAR(20) NOT NULL,
 roomCode VARCHAR(20) NOT NULL,
 time BIGINT NOT NULL,
 person_id INT NOT NULL,
-PRIMARY KEY (time),
-INDEX person_idx (person_id),
+PRIMARY KEY (time, person_id),
 FOREIGN KEY (person_id)
 	REFERENCES person (numBI)
 	ON UPDATE CASCADE

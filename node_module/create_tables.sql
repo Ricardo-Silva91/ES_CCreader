@@ -1,0 +1,41 @@
+CREATE TABLE person(
+country VARCHAR(20) NOT NULL,
+firstname VARCHAR(50) NOT NULL,
+notes VARCHAR(500) NOT NULL,
+documentType VARCHAR(50) NOT NULL,
+cardVersion VARCHAR(50) NOT NULL,
+numBI INT NOT NULL,
+lastnameFather VARCHAR(50) NOT NULL,
+lastnameMother VARCHAR(50) NOT NULL,
+numSNS INT NOT NULL,
+firstnameMother VARCHAR(20) NOT NULL,
+locale VARCHAR(50) NOT NULL,
+deliveryDate VARCHAR(15) NOT NULL,
+height VARCHAR(6) NOT NULL,
+numSS INT NOT NULL,
+sex CHAR NOT NULL,
+cardNumberPAN INT NOT NULL,
+firstnameFather VARCHAR(20) NOT NULL,
+birthDate VARCHAR(15) NOT NULL,
+mrz3 VARCHAR(50) NOT NULL,
+mrz2 VARCHAR(50) NOT NULL,
+lastname VARCHAR(50) NOT NULL,
+mrz1 VARCHAR(50) NOT NULL,
+nationality VARCHAR(5) NOT NULL,
+numNIF INT NOT NULL,
+cardNumber VARCHAR(25) NOT NULL,
+deliveryEntity VARCHAR(50) NOT NULL,
+PRIMARY KEY (numBI));
+
+
+CREATE TABLE interaction(
+interaction VARCHAR(20) NOT NULL,
+roomCode VARCHAR(20) NOT NULL,
+time INT(11) NOT NULL,
+person_id INT NOT NULL,
+PRIMARY KEY (time),
+INDEX person_idx (person_id),
+FOREIGN KEY (person_id)
+	REFERENCES person (numBI)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE);

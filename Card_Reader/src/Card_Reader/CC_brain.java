@@ -29,7 +29,7 @@ public class CC_brain {
     private static CardTerminal terminal;
     private static String roomCode = "4.2.11";
 
-    private static String serverUrl = "http://localhost:8080/RoomsServer/cardReaders/1";
+    private static String serverUrl = "http://192.168.1.91:3000/report";
 
     private static int init() {
 
@@ -91,7 +91,7 @@ public class CC_brain {
 
                 //send data for logging (card inserted)
                 System.out.println("Sending to server (card inserted)");                
-                int error = 0;//sendToServer(card, "inserted");
+                int error = sendToServer(card, "inserted");
                 if (error != 0 ){
                     System.err.println("Server Connection Error");                
                 }
@@ -102,7 +102,7 @@ public class CC_brain {
                 
                 //send card removed info to server
                 System.out.println("Sending to server (card removed)");
-                error = 0;//sendToServer(card, "removed");
+                error = sendToServer(card, "removed");
                 if (error != 0 ){
                     System.err.println("Server Connection Error");                
                 }
@@ -132,7 +132,7 @@ public class CC_brain {
             serverConnection.setRequestMethod("POST");
             serverConnection.setRequestProperty("Content-Type", "application/json");
 
-            String serviceInput = card.getJson(roomCode, interaction);
+            String serviceInput =  card.getJson(roomCode, interaction);
 
             System.err.println(serviceInput);
             
@@ -140,11 +140,14 @@ public class CC_brain {
             outs.write(serviceInput.getBytes());
             outs.flush();
 
-            if (serverConnection.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+            
+            if (serverConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 throw new RuntimeException("Failed : HTTP error code : "
                         + serverConnection.getResponseCode());
             }
 
+            serverConnection.getResponseCode();
+            
             BufferedReader buf = new BufferedReader(new InputStreamReader(serverConnection.getInputStream()));
 
             String output;

@@ -228,6 +228,31 @@ public class CardData {
 
     }
     
+    public void sendIDToJsonFile(String outFile) {
+        JSONObject obj = new JSONObject();
+
+        
+        obj.put("numBI", this.numBI);
+
+        //System.out.println(card_js);
+        try {
+            File fout = new File(outFile);
+            FileOutputStream fouts = new FileOutputStream(fout);
+            fouts.write(obj.toString().getBytes());
+            fouts.close();
+            
+        } catch (FileNotFoundException ex) {
+            System.err.println("Error: File not Found!");
+            ex.printStackTrace();
+            //Logger.getLogger(CardData.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.err.println("Error: can't wirte to file!");
+            ex.printStackTrace();
+            //Logger.getLogger(CardData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
     
     public String getJson(String roomCode, String interactionType) {
         JSONObject card_js = new JSONObject();

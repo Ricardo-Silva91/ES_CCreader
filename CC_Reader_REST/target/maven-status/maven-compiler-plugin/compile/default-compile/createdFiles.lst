@@ -1,0 +1,11 @@
+service/AbstractFacade.class
+service/InteractionFacadeREST.class
+cardIO/CC_IO.class
+entities/Interaction.class
+entities/Person.class
+service/ApplicationConfig.class
+entities/Person_.class
+entities/Interaction_.class
+service/PersonFacadeREST.class
+cardIO/CardData.class
+web/UserPage_servlet.class

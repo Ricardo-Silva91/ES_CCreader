@@ -29,7 +29,7 @@ public class CC_brain {
     private static CardTerminal terminal;
     private static String roomCode = "4.2.11";
 
-    private static String serverUrl = "http://192.168.1.91:3000/report";
+    private static String serverUrl = "http://localhost:3000/report";
 
     private static int init() {
 
@@ -70,12 +70,17 @@ public class CC_brain {
     }
 
     public static void main(String[] args) {
+        
+        
 
         int flag = 0;
 
         CC_IO ccIO = new CC_IO();
 
         flag = init();
+        
+        Database_connector db = new Database_connector("jdbc:mysql://localhost:3306/es_module", "root", "");
+        
 
         //System.err.println(System.getProperty("os.name"));     
         //System.err.println(System.getProperty("os.name").split(" ")[0].equals("Windows"));
@@ -89,23 +94,20 @@ public class CC_brain {
                 //get data
                 CardData card = ccIO.RunAnalisys();
 
-                //send data for logging (card inserted)
-                System.out.println("Sending to server (card inserted)");                
-                int error = sendToServer(card, "inserted");
-                if (error != 0 ){
-                    System.err.println("Server Connection Error");                
-                }
+                //send data for logging (card inserted)                
+                db.connect();
+                db.dump_interaction(card, roomCode, "inserted");
+                db.connection_close();
                 
                 //wait for card to be removed before resuming action
                 System.out.println("Please remove card");
                 while (terminal.isCardPresent() == true);
                 
-                //send card removed info to server
-                System.out.println("Sending to server (card removed)");
-                error = sendToServer(card, "removed");
-                if (error != 0 ){
-                    System.err.println("Server Connection Error");                
-                }
+                //send card removed info to server database
+                db.connect();
+                db.dump_interaction(card, roomCode, "removed");
+                db.connection_close();
+                
                 
 
             } catch (CardException ex) {
@@ -113,7 +115,7 @@ public class CC_brain {
                 //int errorNumber = Integer.parseInt(ex.getMessage().split("Error code : -")[1]);
                 System.out.println("\n\nSmartcardio Exception.");
                 //Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
-                flag = 1;
+                //flag = 1;
             }
 
         }

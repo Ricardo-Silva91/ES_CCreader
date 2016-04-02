@@ -150,7 +150,7 @@ public class CC_IO {
                 //System.out.println("Dados de identificação:");
                 //PrintIDData(idData);
                 xpto = GetIDData(idData);
-                xpto.sendToJsonFile("current_card.json");
+                //xpto.sendToJsonFile("current_card.json");
             }
             /*
             // Leitura de dados da zona privada do cartao - ECF#7 

@@ -28,6 +28,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import static org.apache.commons.io.FilenameUtils.separatorsToSystem;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -40,8 +41,11 @@ import org.json.simple.parser.ParseException;
 @Path("entities.person")
 public class PersonFacadeREST extends AbstractFacade<Person> {
     
-    private static String currentCard_path = "/home/rofler/current_card.json";
-    
+    //testing
+    //private static String currentCard_path = "/home/rofler/current_card.json";
+    //for release
+    private static String currentCard_path = separatorsToSystem(System.getProperty("user.home") + "/" + "current_card.json");
+        
     @PersistenceContext(unitName = "com.mycompany_CustomerDB_war_1.0-SNAPSHOTPU")
     private EntityManager em;
     
@@ -89,6 +93,7 @@ public class PersonFacadeREST extends AbstractFacade<Person> {
         try {
             JSONParser parser = new JSONParser();
             
+            File f = new File(currentCard_path);            
             JSONObject json_o;
             json_o = (JSONObject) parser.parse(new FileReader(currentCard_path));
             res = json_o.get("numBI").toString();

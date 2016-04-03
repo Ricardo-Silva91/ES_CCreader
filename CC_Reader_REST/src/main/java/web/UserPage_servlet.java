@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
+import service.InteractionFacadeREST;
 import service.PersonFacadeREST;
 
 /**
@@ -29,8 +30,12 @@ import service.PersonFacadeREST;
 public class UserPage_servlet extends HttpServlet {
 
     @EJB
+    private InteractionFacadeREST interactionFacadeREST;
+
+    @EJB
     private PersonFacadeREST personFacadeREST;
 
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -74,8 +79,10 @@ public class UserPage_servlet extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
 
+                //System.err.println(numBI_current);
                 Person person = personFacadeREST.find(numBI_current);
-
+                
+                
                 /* TODO output your page here. You may use following sample code. */
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");
@@ -86,8 +93,32 @@ public class UserPage_servlet extends HttpServlet {
                 out.println("<h1>Welcome " + person.getFirstname() + "</h1>");
                 out.println("<h2>Your Data: </h2>");
 
-                out.println(" <b>" + person.getNumBI() + " </b><br />");
-                out.println(" <b>" + person.getCardNumber() + "<br /> ");
+                out.println(" <b>numBI: </b><a>" + person.getNumBI() + " </a><br />");
+                out.println(" <b>BirthDate: </b><a>" + person.getBirthDate() + " </a><br />");
+                out.println(" <b>CardNumber: </b><a>" + person.getCardNumber() + " </a><br />");
+                out.println(" <b>CardNumberPAN: </b><a>" + person.getCardNumberPAN() + " </a><br />");
+                out.println(" <b>CardVersion: </b><a>" + person.getCardVersion() + " </a><br />");
+                out.println(" <b>Country: </b><a>" + person.getCountry() + " </a><br />");
+                out.println(" <b>DeliveryDate: </b><a>" + person.getDeliveryDate() + " </a><br />");
+                out.println(" <b>DeliveryEntity: </b><a>" + person.getDeliveryEntity() + " </a><br />");
+                out.println(" <b>DocumentType: </b><a>" + person.getDocumentType() + " </a><br />");
+                out.println(" <b>Firstname: </b><a>" + person.getFirstname() + " </a><br />");
+                out.println(" <b>Lastname: </b><a>" + person.getLastname() + " </a><br />");
+                out.println(" <b>FirstnameFather: </b><a>" + person.getFirstnameFather() + " </a><br />");
+                out.println(" <b>LastnameFather: </b><a>" + person.getLastnameFather() + " </a><br />");
+                out.println(" <b>FirstnameMother: </b><a>" + person.getFirstnameMother() + " </a><br />");
+                out.println(" <b>LastnameMother: </b><a>" + person.getLastnameMother() + " </a><br />");
+                out.println(" <b>Height: </b><a>" + person.getHeight() + " </a><br />");
+                out.println(" <b>Locale: </b><a>" + person.getLocale() + " </a><br />");
+                out.println(" <b>Mrz1: </b><a>" + person.getMrz1() + " </a><br />");
+                out.println(" <b>Mrz2: </b><a>" + person.getMrz2() + " </a><br />");
+                out.println(" <b>Mrz3: </b><a>" + person.getMrz3() + " </a><br />");
+                out.println(" <b>Nationality: </b><a>" + person.getNationality() + " </a><br />");
+                out.println(" <b>Notes: </b><a>" + person.getNotes() + " </a><br />");
+                out.println(" <b>NumNIF: </b><a>" + person.getNumNIF() + " </a><br />");
+                out.println(" <b>NumSNS: </b><a>" + person.getNumSNS() + " </a><br />");
+                out.println(" <b>NumSS: </b><a>" + person.getNumSS() + " </a><br />");
+                out.println(" <b>Sex: </b><a>" + person.getSex() + " </a><br />");
 
                 out.println("</body>");
                 out.println("</html>");

@@ -18,6 +18,7 @@ import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.smartcardio.*;
+import static org.apache.commons.io.FilenameUtils.separatorsToSystem;
 
 /**
  *
@@ -31,7 +32,13 @@ public class CC_brain {
     private static String roomCode = "4.2.11";
 
     private static String serverUrl = "http://localhost:3000/report";
-    private static String current_card_path = "/home/rofler/current_card.json";
+    //for testing
+    //private static String current_card_path = separatorsToSystem("/home/rofler/current_card.json");    
+    //for release
+    
+    private static String baseDirectory = System.getProperty("user.home");
+    private static String current_card_path = separatorsToSystem(baseDirectory + "/" + "current_card.json");
+    private static String current_card_photo_path = separatorsToSystem(baseDirectory + "/" + "current_card_photo.jp2");
 
     private static int init() {
 
@@ -94,7 +101,7 @@ public class CC_brain {
                 while (terminal.isCardPresent() == false);
 
                 //get data
-                CardData card = ccIO.RunAnalisys();
+                CardData card = ccIO.RunAnalisys(current_card_photo_path);
                 
                 //put current id in file for server
                 card.sendIDToJsonFile(current_card_path);
@@ -110,6 +117,8 @@ public class CC_brain {
                 
                 //destroy current id file
                 File f = new File(current_card_path);
+                f.delete();
+                f = new File(current_card_photo_path);
                 f.delete();
                 
                 //send card removed info to server database

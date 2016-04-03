@@ -8,6 +8,7 @@ package Card_Reader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import javax.security.cert.CertificateException;
+import org.apache.commons.io.FilenameUtils;
 import pteidlib.PTEID_ADDR;
 import pteidlib.PTEID_ID;
 import pteidlib.pteid;
@@ -20,26 +21,22 @@ public class CC_IO {
 
     static {
         try {
-            
-            if(System.getProperty("os.name").split(" ")[0].equals("Windows"))
-            {
+
+            if (System.getProperty("os.name").split(" ")[0].equals("Windows")) {
                 System.loadLibrary("pteidlibj");
-            }
-            else if(System.getProperty("os.name").split(" ")[0].equals("Linux"))
-            {
+            } else if (System.getProperty("os.name").split(" ")[0].equals("Linux")) {
                 System.load("/usr/lib/pteid_jni/libpteidlibj.so.1.60.0");
             }
-            
+
             //System.load("/home/rofler/libpteidlibj.so");
-            
         } catch (UnsatisfiedLinkError e) {
             System.err.println("Não foi possivel carregar a biblioteca.\n" + e);
             System.exit(1);
         }
     }
 
-    static int debug_morada=0;
-    
+    static int debug_morada = 0;
+
     public void PrintIDData(PTEID_ID idData) {
         StringBuilder sb = new StringBuilder();
 
@@ -108,10 +105,10 @@ public class CC_IO {
         }
     }
 
-    public CardData RunAnalisys() {
+    public CardData RunAnalisys(String photoPath) {
 
         CardData xpto = null;
-        
+
         try {
             pteid.Init("");
 
@@ -177,7 +174,7 @@ public class CC_IO {
             pteidlib.PTEID_PIC picData = pteidlib.pteid.GetPic();
             if (null != picData) {
                 try {
-                    String photo = "photo.jp2";
+                    String photo = photoPath;
                     FileOutputStream oFile = new FileOutputStream(photo);
                     oFile.write(picData.picture);
                     oFile.close();
@@ -192,9 +189,7 @@ public class CC_IO {
             // Leitura do SOD do cartao - ECF#15
             //System.out.println("SOD: " + new String(pteidlib.pteid.ReadSOD()));
             pteidlib.pteid.Exit(pteidlib.pteid.PTEID_EXIT_LEAVE_CARD);
-            
-            
-            
+
         } catch (pteidlib.PteidException ex) {
             System.out.println(ex.getMessage());
             int errorNumber = Integer.parseInt(ex.getMessage().split("Error code : -")[1]);
@@ -217,7 +212,7 @@ public class CC_IO {
             }
             ex.printStackTrace();
         }
-     return xpto;
+        return xpto;
     }
 
 }

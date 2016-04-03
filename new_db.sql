@@ -49,3 +49,6 @@ FOREIGN KEY (person_id)
 	REFERENCES person (numBI)
 	ON UPDATE CASCADE
 	ON DELETE CASCADE);
+    
+INSERT INTO `es_module`.`person` (`country`, `firstname`, `notes`, `documentType`, `cardVersion`, `numBI`, `lastnameFather`, `lastnameMother`, `numSNS`, `firstnameMother`, `locale`, `deliveryDate`, `height`, `numSS`, `sex`, `cardNumberPAN`, `firstnameFather`, `birthDate`, `mrz3`, `mrz2`, `lastname`, `mrz1`, `nationality`, `numNIF`, `cardNumber`, `deliveryEntity`, `Authentication`) VALUES ('d', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy', 'dummy');
+INSERT INTO `es_module`.`current_card` (`person_id`) VALUES ('dummy');

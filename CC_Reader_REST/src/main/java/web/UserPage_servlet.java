@@ -10,8 +10,11 @@ import entities.Person;
 import entities.Interaction;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,7 +42,6 @@ public class UserPage_servlet extends HttpServlet {
     @EJB
     private PersonFacadeREST personFacadeREST;
 
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -56,7 +58,7 @@ public class UserPage_servlet extends HttpServlet {
         //String test = "test";
         //CardData card_inserted = new CardData(test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test);
         List current_cards = currentCardFacadeREST.findAll();
-        CurrentCard current_card =(CurrentCard) current_cards.get(0);
+        CurrentCard current_card = (CurrentCard) current_cards.get(0);
         String numBI_current = current_card.getPersonId();
         System.err.println(numBI_current);
 
@@ -77,7 +79,7 @@ public class UserPage_servlet extends HttpServlet {
                 out.println(" <b> Please insert Citizen card in the reader and try again </b><br />");
 
                 out.println(" <b> If the card is properly inserted and this message appears, wait a couple seconds and try again</b><br />");
-                
+
                 out.println("</body>");
                 out.println("</html>");
             }
@@ -88,8 +90,7 @@ public class UserPage_servlet extends HttpServlet {
 
                 //System.err.println(numBI_current);
                 Person person = personFacadeREST.find(numBI_current);
-                
-                
+
                 /* TODO output your page here. You may use following sample code. */
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");
@@ -127,21 +128,29 @@ public class UserPage_servlet extends HttpServlet {
                 out.println(" <b>NumSS: </b><a>" + person.getNumSS() + " </a><br />");
                 out.println(" <b>Sex: </b><a>" + person.getSex() + " </a><br />");
 
-                
-                out.println("<h2>Your Logged Interactions: </h2>");            
+                out.println("<h2>Your Logged Interactions: </h2>");
                 List interactions = interactionFacadeREST.findAll();
                 for (Iterator it = interactions.iterator(); it.hasNext();) {
                     Interaction elem = (Interaction) it.next();
-                    if(elem.getPersonId().getNumBI().equals((person.getNumBI()))){
-                        out.println(" <b> Action: </b><a>" + elem.getInteraction()+ " </b><br />");
-                        out.println(" <b> Room Code: </b><a>" + elem.getRoomCode()+ " </b><br />");
-                        out.println(" <b> Timestamp: </b><a>" + elem.getTime()+ " </b><br />");
+                    if (elem.getPersonId().getNumBI().equals((person.getNumBI()))) {
+
+                        long unixSeconds = Long.valueOf(elem.getTime()).longValue();
+                        Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z"); // the format of your date
+
+                        out.println(" <b> Room code: </b><a>" + elem.getRoomCode() + "</a><b>&nbsp&nbsp&nbsp&nbspTimeStamp: </b><a>" + sdf.format(date)+ "</a><b>&nbsp&nbsp&nbsp&nbsp&nbspAction: </b><a>" + elem.getInteraction() + "</a><br />");
+                        out.println("<p></p>");
+                        //out.println(" <b> Room Code: </b><a>" + elem.getRoomCode() + " </b><br />");
+
+                        //sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+//sdf.format(date)
+                        //out.println(" <b> Timestamp: </b><a>" + sdf.format(date) + " </b><br />");
                     }
                 }
 
-                    out.println("</body>");
-                    out.println("</html>");
-                }
+                out.println("</body>");
+                out.println("</html>");
+            }
         }
     }
 

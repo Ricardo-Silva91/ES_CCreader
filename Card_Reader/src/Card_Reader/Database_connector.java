@@ -188,5 +188,32 @@ public class Database_connector {
 
         return res;
     }
+    
+    public int update_curent_card(String numBI) {
+
+        int res = 0;
+
+        try {
+
+            if (person_exists(numBI) == 1) {
+                //insert person
+                PreparedStatement pst = con.prepareStatement("UPDATE current_card SET person_id=? ;");
+                pst.setString(1, numBI);
+                
+                
+                pst.executeUpdate();
+
+            } else {
+                System.out.println("This person does not exist");
+            }
+
+            
+        } catch (SQLException ex) {
+            System.err.println("error uploading current card");
+            res = -1;
+        }
+
+        return res;
+    }
 
 }

@@ -170,6 +170,9 @@ public class CC_IO {
 
             }
 
+            
+            /*
+            
             // Leitura da fotografia do cidadao - ECF#13
             pteidlib.PTEID_PIC picData = pteidlib.pteid.GetPic();
             if (null != picData) {
@@ -186,6 +189,7 @@ public class CC_IO {
                 }
             }
 
+            */
             // Leitura do SOD do cartao - ECF#15
             //System.out.println("SOD: " + new String(pteidlib.pteid.ReadSOD()));
             pteidlib.pteid.Exit(pteidlib.pteid.PTEID_EXIT_LEAVE_CARD);

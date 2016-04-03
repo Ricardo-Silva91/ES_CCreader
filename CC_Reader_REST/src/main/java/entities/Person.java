@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -58,6 +59,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Person.findByDeliveryEntity", query = "SELECT p FROM Person p WHERE p.deliveryEntity = :deliveryEntity"),
     @NamedQuery(name = "Person.findByAuthentication", query = "SELECT p FROM Person p WHERE p.authentication = :authentication")})
 public class Person implements Serializable {
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "person")
+    private CurrentCard currentCard;
 
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
@@ -481,6 +485,14 @@ public class Person implements Serializable {
     @Override
     public String toString() {
         return "entities.Person[ numBI=" + numBI + " ]";
+    }
+
+    public CurrentCard getCurrentCard() {
+        return currentCard;
+    }
+
+    public void setCurrentCard(CurrentCard currentCard) {
+        this.currentCard = currentCard;
     }
     
 }

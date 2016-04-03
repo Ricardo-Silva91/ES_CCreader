@@ -7,6 +7,7 @@ package web;
 
 import cardIO.CC_IO;
 import cardIO.CardData;
+import entities.CurrentCard;
 import entities.Person;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
+import service.CurrentCardFacadeREST;
 import service.InteractionFacadeREST;
 import service.PersonFacadeREST;
 
@@ -28,6 +30,9 @@ import service.PersonFacadeREST;
  */
 @WebServlet(name = "UserPage_servlet", urlPatterns = {"/UserPage_servlet"})
 public class UserPage_servlet extends HttpServlet {
+
+    @EJB
+    private CurrentCardFacadeREST currentCardFacadeREST;
 
     @EJB
     private InteractionFacadeREST interactionFacadeREST;
@@ -51,9 +56,12 @@ public class UserPage_servlet extends HttpServlet {
         //CC_IO cc_io = new CC_IO();
         //String test = "test";
         //CardData card_inserted = new CardData(test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test);
-        String numBI_current = PersonFacadeREST.getCurrentCardId();
+        List current_cards = currentCardFacadeREST.findAll();
+        CurrentCard current_card =(CurrentCard) current_cards.get(0);
+        String numBI_current = current_card.getPersonId();
+        System.err.println(numBI_current);
 
-        if (numBI_current == null) {
+        if (numBI_current.equals("dummy")) {
 
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {

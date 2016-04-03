@@ -1,12 +1,13 @@
 package entities;
 
+import entities.CurrentCard;
 import entities.Interaction;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-04-03T02:14:16")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-04-03T16:19:08")
 @StaticMetamodel(Person.class)
 public class Person_ { 
 
@@ -26,6 +27,7 @@ public class Person_ {
     public static volatile SingularAttribute<Person, String> height;
     public static volatile SingularAttribute<Person, String> authentication;
     public static volatile SingularAttribute<Person, String> numSS;
+    public static volatile SingularAttribute<Person, CurrentCard> currentCard;
     public static volatile SingularAttribute<Person, String> sex;
     public static volatile SingularAttribute<Person, String> cardNumberPAN;
     public static volatile SingularAttribute<Person, String> firstnameFather;

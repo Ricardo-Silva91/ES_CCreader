@@ -104,10 +104,11 @@ public class CC_brain {
                 CardData card = ccIO.RunAnalisys(current_card_photo_path);
                 
                 //put current id in file for server
-                card.sendIDToJsonFile(current_card_path);
-
-                //send data for logging (card inserted)                
+                //card.sendIDToJsonFile(current_card_path);         
                 db.connect();
+                db.update_curent_card(card.getNumBI());
+
+                //send data for logging (card inserted)       
                 db.dump_interaction(card, roomCode, "inserted");
                 db.connection_close();
                 
@@ -116,13 +117,16 @@ public class CC_brain {
                 while (terminal.isCardPresent() == true);
                 
                 //destroy current id file
-                File f = new File(current_card_path);
-                f.delete();
+                db.connect();
+                db.update_curent_card("dummy");
+                
+                File f;
+                //f = new File(current_card_path);
+                //f.delete();
                 f = new File(current_card_photo_path);
                 f.delete();
                 
                 //send card removed info to server database
-                db.connect();
                 db.dump_interaction(card, roomCode, "removed");
                 db.connection_close();
                 

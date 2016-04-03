@@ -40,3 +40,12 @@ FOREIGN KEY (person_id)
 	REFERENCES person (numBI)
 	ON UPDATE CASCADE
 	ON DELETE CASCADE);
+    
+CREATE TABLE current_card(
+person_id VARCHAR(9) NOT NULL,
+PRIMARY KEY (person_id),
+INDEX person_idx (person_id),
+FOREIGN KEY (person_id)
+	REFERENCES person (numBI)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE);

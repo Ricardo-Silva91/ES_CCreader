@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Interaction.findAll", query = "SELECT i FROM Interaction i"),
     @NamedQuery(name = "Interaction.findByInteraction", query = "SELECT i FROM Interaction i WHERE i.interaction = :interaction"),
     @NamedQuery(name = "Interaction.findByRoomCode", query = "SELECT i FROM Interaction i WHERE i.roomCode = :roomCode"),
-    @NamedQuery(name = "Interaction.findByTime", query = "SELECT i FROM Interaction i WHERE i.time = :time")})
+    @NamedQuery(name = "Interaction.findByTime", query = "SELECT i FROM Interaction i WHERE i.time = :time"),
+    @NamedQuery(name = "Interaction.findByPerson_id", query = "SELECT i FROM Interaction i WHERE i.personId = :personId")})
 public class Interaction implements Serializable {
 
     private static final long serialVersionUID = 1L;

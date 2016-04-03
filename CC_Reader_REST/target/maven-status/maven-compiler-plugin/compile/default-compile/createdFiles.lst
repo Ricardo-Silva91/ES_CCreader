@@ -1,11 +1,12 @@
 service/AbstractFacade.class
+entities/CurrentCard_.class
 entities/Interaction.class
 entities/Person.class
+service/CurrentCardFacadeREST.class
 service/ApplicationConfig.class
 entities/Interaction_.class
 web/UserPage_servlet.class
 service/InteractionFacadeREST.class
-cardIO/CC_IO.class
+entities/CurrentCard.class
 entities/Person_.class
 service/PersonFacadeREST.class
-cardIO/CardData.class

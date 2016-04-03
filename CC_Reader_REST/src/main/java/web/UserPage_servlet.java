@@ -7,6 +7,7 @@ package web;
 
 import entities.CurrentCard;
 import entities.Person;
+import entities.Interaction;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
@@ -126,9 +127,21 @@ public class UserPage_servlet extends HttpServlet {
                 out.println(" <b>NumSS: </b><a>" + person.getNumSS() + " </a><br />");
                 out.println(" <b>Sex: </b><a>" + person.getSex() + " </a><br />");
 
-                out.println("</body>");
-                out.println("</html>");
-            }
+                
+                out.println("<h2>Your Logged Interactions: </h2>");            
+                List interactions = interactionFacadeREST.findAll();
+                for (Iterator it = interactions.iterator(); it.hasNext();) {
+                    Interaction elem = (Interaction) it.next();
+                    if(elem.getPersonId().getNumBI().equals((person.getNumBI()))){
+                        out.println(" <b> Action: </b><a>" + elem.getInteraction()+ " </b><br />");
+                        out.println(" <b> Room Code: </b><a>" + elem.getRoomCode()+ " </b><br />");
+                        out.println(" <b> Timestamp: </b><a>" + elem.getTime()+ " </b><br />");
+                    }
+                }
+
+                    out.println("</body>");
+                    out.println("</html>");
+                }
         }
     }
 

@@ -5,8 +5,6 @@
  */
 package web;
 
-import cardIO.CC_IO;
-import cardIO.CardData;
 import entities.CurrentCard;
 import entities.Person;
 import java.io.IOException;

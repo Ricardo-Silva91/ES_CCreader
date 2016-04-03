@@ -38,7 +38,7 @@ import org.json.simple.parser.ParseException;
  * @author rofler
  */
 @Stateless
-@Path("entities.person")
+//@Path("entities.person")
 public class PersonFacadeREST extends AbstractFacade<Person> {
     
     //testing

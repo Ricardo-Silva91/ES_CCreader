@@ -204,7 +204,7 @@ public class Database_connector {
                 pst.executeUpdate();
 
             } else {
-                System.out.println("This person does not exist");
+                System.out.println("This person does not exist!");
             }
 
             

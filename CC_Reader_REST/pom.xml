@@ -93,6 +93,16 @@
             <artifactId>jetty-deploy</artifactId>
             <version>9.3.8.v20160314</version>
         </dependency>
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>ejb-api</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.38</version>
+        </dependency>
 
 
     </dependencies>
@@ -126,6 +136,11 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.3.8.v20160314</version>
+                <configuration>
+                    <webApp>
+                        <contextPath>/CC_Reader_REST</contextPath>
+                    </webApp>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -156,6 +171,7 @@
                         <phase>validate</phase>
                         <goals>
                             <goal>copy</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
                             <outputDirectory>${endorsed.dir}</outputDirectory>

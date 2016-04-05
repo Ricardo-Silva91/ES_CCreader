@@ -181,6 +181,10 @@ public class CardData {
         return notes;
     }
 
+    public String getAuthentication() {
+        return authentication;
+    }
+
     public void sendToJsonFile(String outFile) {
         JSONObject obj = new JSONObject();
 

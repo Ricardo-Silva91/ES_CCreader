@@ -278,7 +278,7 @@ public class Database_connector_sqlite {
 
             ResultSet rs = pst.executeQuery();
 
-            while(rs.next()) {
+            while (rs.next()) {
                 res.add(new Card_Interaction(rs.getString(1), rs.getString(2), rs.getString(3), person_id));
             }
 
@@ -290,7 +290,24 @@ public class Database_connector_sqlite {
 
         return res;
     }
-    
+
+    public void update_auth(String person_id, String pass) {
+        
+        try {
+            PreparedStatement pst = con.prepareStatement("update person set Authentication=? where numBI=?");
+            pst.setString(1, person_id);
+            pst.setString(2, pass);
+
+            pst.executeUpdate();
+            
+
+        } catch (SQLException ex) {
+            //Logger.getLogger(Database_connector_mysql.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error: cannot update pass");
+            
+        }
+    }
+
     /**
      * Terminate con to the database.
      */

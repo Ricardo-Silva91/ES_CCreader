@@ -132,7 +132,7 @@
     </dependencies>
 
     <build>
-        <finalName>Card_Reader_REST</finalName>
+        <finalName>CC_Reader_REST</finalName>
         <plugins>
             <plugin>
                 <groupId>org.glassfish.maven.plugin</groupId>

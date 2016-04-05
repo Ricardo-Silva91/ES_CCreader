@@ -5,7 +5,11 @@ entities/Person.class
 service/CurrentCardFacadeREST.class
 service/ApplicationConfig.class
 entities/Interaction_.class
+web/UserPage_servlet.class
 service/InteractionFacadeREST.class
 entities/CurrentCard.class
+Database/Database_connector_sqlite.class
+Database/CardData.class
 entities/Person_.class
 service/PersonFacadeREST.class
+Database/Card_Interaction.class

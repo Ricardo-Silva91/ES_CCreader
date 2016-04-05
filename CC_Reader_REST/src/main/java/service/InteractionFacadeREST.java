@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author rofler
  */
 @Stateless
-@Path("entities.interaction")
+//@Path("entities.interaction")
 public class InteractionFacadeREST extends AbstractFacade<Interaction> {
 
     @PersistenceContext(unitName = "com.mycompany_CustomerDB_war_1.0-SNAPSHOTPU")

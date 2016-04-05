@@ -32,8 +32,28 @@ import org.json.simple.parser.ParseException;
  * @author rofler
  */
 @Stateless
-@Path("entities.currentcard")
+//@Path("entities.currentcard")
 public class CurrentCardFacadeREST extends AbstractFacade<CurrentCard> {
+
+    /**
+     * Java global JNDI.
+     */
+    private static final String JAVA_GLOBAL = "java:global/";
+
+    /**
+     * Application name in application server.
+     */
+    private static final String APP_NAME = "CC_Reader_REST/";
+
+    /**
+     * Application EJB jar name.
+     */
+    private static final String APP_EJB = "CurrentCardFacadeREST/";
+
+    /**
+     * Credit EJB constant.
+     */
+    public static final String CURRENTCARD_EJB = JAVA_GLOBAL + APP_NAME + APP_EJB + "CurrentCardFacadeREST!service.CurrentCardFacadeLocal";
 
     @PersistenceContext(unitName = "com.mycompany_CustomerDB_war_1.0-SNAPSHOTPU")
     private EntityManager em;
@@ -98,7 +118,7 @@ public class CurrentCardFacadeREST extends AbstractFacade<CurrentCard> {
     public static String getCurrentCardId() {
 
         String res = null;
-/*
+        /*
         try {
             JSONParser parser = new JSONParser();
 
@@ -114,7 +134,7 @@ public class CurrentCardFacadeREST extends AbstractFacade<CurrentCard> {
         } catch (ParseException ex) {
             System.err.println("Parse Exception");
         }
-*/
+         */
         return res;
 
     }

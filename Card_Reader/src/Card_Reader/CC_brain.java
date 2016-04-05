@@ -39,6 +39,7 @@ public class CC_brain {
     private static String baseDirectory = System.getProperty("user.home");
     private static String current_card_path = separatorsToSystem(baseDirectory + "/" + "current_card.json");
     private static String current_card_photo_path = separatorsToSystem(baseDirectory + "/" + "current_card_photo.jp2");
+    private static String databasePath = separatorsToSystem(baseDirectory + "/" + "es_module.db");
 
     private static int init() {
 
@@ -88,8 +89,8 @@ public class CC_brain {
 
         flag = init();
         
-        Database_connector db = new Database_connector("jdbc:mysql://localhost:3306/es_module", "root", "");
-        
+        //Database_connector_mysql db = new Database_connector_mysql("jdbc:mysql://localhost:3306/es_module", "root", "");
+        Database_connector_sqlite db = new Database_connector_sqlite();
 
         //System.err.println(System.getProperty("os.name"));     
         //System.err.println(System.getProperty("os.name").split(" ")[0].equals("Windows"));
@@ -105,11 +106,13 @@ public class CC_brain {
                 
                 //put current id in file for server
                 //card.sendIDToJsonFile(current_card_path);         
-                db.connect();
+                db.connect(databasePath);
                 db.update_curent_card(card.getNumBI());
 
                 //send data for logging (card inserted)       
                 db.dump_interaction(card, roomCode, "inserted");
+                
+                System.err.println(db.get_current_user());
                 db.connection_close();
                 
                 //wait for card to be removed before resuming action
@@ -117,7 +120,7 @@ public class CC_brain {
                 while (terminal.isCardPresent() == true);
                 
                 //destroy current id file
-                db.connect();
+                db.connect(databasePath);
                 db.update_curent_card("dummy");
                 
                 File f;

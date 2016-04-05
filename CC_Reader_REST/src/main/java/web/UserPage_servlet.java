@@ -5,6 +5,10 @@
  */
 package web;
 
+import Database.CardData;
+import Database.Card_Interaction;
+import Database.Database_connector_sqlite;
+//import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import entities.CurrentCard;
 import entities.Person;
 import entities.Interaction;
@@ -15,16 +19,22 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import static org.apache.commons.io.FilenameUtils.separatorsToSystem;
 import org.json.JSONObject;
 import service.CurrentCardFacadeREST;
 import service.InteractionFacadeREST;
 import service.PersonFacadeREST;
+import org.ow2.jonas.lib.util.JNDIUtils;
 
 /**
  *
@@ -33,14 +43,16 @@ import service.PersonFacadeREST;
 @WebServlet(name = "UserPage_servlet", urlPatterns = {"/UserPage_servlet"})
 public class UserPage_servlet extends HttpServlet {
 
-    @EJB
-    private CurrentCardFacadeREST currentCardFacadeREST;
-
+    //@EJB
+    //private CurrentCardFacadeREST currentCardFacadeREST;
     @EJB
     private InteractionFacadeREST interactionFacadeREST;
 
     @EJB
     private PersonFacadeREST personFacadeREST;
+
+    private static String baseDirectory = System.getProperty("user.home");
+    private static String databasePath = separatorsToSystem(baseDirectory + "/" + "es_module.db");
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,16 +64,21 @@ public class UserPage_servlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, NamingException {
 
         //CC_IO cc_io = new CC_IO();
         //String test = "test";
         //CardData card_inserted = new CardData(test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test, test);
-        List current_cards = currentCardFacadeREST.findAll();
-        CurrentCard current_card = (CurrentCard) current_cards.get(0);
-        String numBI_current = current_card.getPersonId();
-        System.err.println(numBI_current);
+        Database_connector_sqlite db = new Database_connector_sqlite();
+        db.connect(databasePath);
+        String numBI_current = db.get_current_user();
+        db.connection_close();
 
+        //CurrentCardFacadeREST currentCardFacadeREST = (CurrentCardFacadeREST) InitialContext.doLookup("java:module/CurrentCardFacadeREST");//= getLocalEJB(CurrentCardFacadeREST.CURRENTCARD_EJB);
+        //List current_cards = currentCardFacadeREST.findAll();
+        //CurrentCard current_card = (CurrentCard) current_cards.get(0);
+        //String numBI_current = current_card.getPersonId();
+        //System.err.println(numBI_current);
         if (numBI_current.equals("dummy")) {
 
             response.setContentType("text/html;charset=UTF-8");
@@ -89,7 +106,10 @@ public class UserPage_servlet extends HttpServlet {
             try (PrintWriter out = response.getWriter()) {
 
                 //System.err.println(numBI_current);
-                Person person = personFacadeREST.find(numBI_current);
+                //Person person = personFacadeREST.find(numBI_current);
+                db.connect(databasePath);
+                CardData card = db.get_person_info(numBI_current);
+                db.connection_close();
 
                 /* TODO output your page here. You may use following sample code. */
                 out.println("<!DOCTYPE html>");
@@ -98,54 +118,59 @@ public class UserPage_servlet extends HttpServlet {
                 out.println("<title>Welcome Page</title>");
                 out.println("</head>");
                 out.println("<body>");
-                out.println("<h1>Welcome " + person.getFirstname() + "</h1>");
+                out.println("<h1>Welcome " + card.getFirstname() + "</h1>");
                 out.println("<h2>Your Data: </h2>");
 
-                out.println(" <b>numBI: </b><a>" + person.getNumBI() + " </a><br />");
-                out.println(" <b>BirthDate: </b><a>" + person.getBirthDate() + " </a><br />");
-                out.println(" <b>CardNumber: </b><a>" + person.getCardNumber() + " </a><br />");
-                out.println(" <b>CardNumberPAN: </b><a>" + person.getCardNumberPAN() + " </a><br />");
-                out.println(" <b>CardVersion: </b><a>" + person.getCardVersion() + " </a><br />");
-                out.println(" <b>Country: </b><a>" + person.getCountry() + " </a><br />");
-                out.println(" <b>DeliveryDate: </b><a>" + person.getDeliveryDate() + " </a><br />");
-                out.println(" <b>DeliveryEntity: </b><a>" + person.getDeliveryEntity() + " </a><br />");
-                out.println(" <b>DocumentType: </b><a>" + person.getDocumentType() + " </a><br />");
-                out.println(" <b>Firstname: </b><a>" + person.getFirstname() + " </a><br />");
-                out.println(" <b>Lastname: </b><a>" + person.getLastname() + " </a><br />");
-                out.println(" <b>FirstnameFather: </b><a>" + person.getFirstnameFather() + " </a><br />");
-                out.println(" <b>LastnameFather: </b><a>" + person.getLastnameFather() + " </a><br />");
-                out.println(" <b>FirstnameMother: </b><a>" + person.getFirstnameMother() + " </a><br />");
-                out.println(" <b>LastnameMother: </b><a>" + person.getLastnameMother() + " </a><br />");
-                out.println(" <b>Height: </b><a>" + person.getHeight() + " </a><br />");
-                out.println(" <b>Locale: </b><a>" + person.getLocale() + " </a><br />");
-                out.println(" <b>Mrz1: </b><a>" + person.getMrz1() + " </a><br />");
-                out.println(" <b>Mrz2: </b><a>" + person.getMrz2() + " </a><br />");
-                out.println(" <b>Mrz3: </b><a>" + person.getMrz3() + " </a><br />");
-                out.println(" <b>Nationality: </b><a>" + person.getNationality() + " </a><br />");
-                out.println(" <b>Notes: </b><a>" + person.getNotes() + " </a><br />");
-                out.println(" <b>NumNIF: </b><a>" + person.getNumNIF() + " </a><br />");
-                out.println(" <b>NumSNS: </b><a>" + person.getNumSNS() + " </a><br />");
-                out.println(" <b>NumSS: </b><a>" + person.getNumSS() + " </a><br />");
-                out.println(" <b>Sex: </b><a>" + person.getSex() + " </a><br />");
+                out.println(" <b>numBI: </b><a>" + card.getNumBI() + " </a><br />");
+                out.println(" <b>BirthDate: </b><a>" + card.getBirthDate() + " </a><br />");
+                out.println(" <b>CardNumber: </b><a>" + card.getCardNumber() + " </a><br />");
+                out.println(" <b>CardNumberPAN: </b><a>" + card.getCardNumberPAN() + " </a><br />");
+                out.println(" <b>CardVersion: </b><a>" + card.getCardVersion() + " </a><br />");
+                out.println(" <b>Country: </b><a>" + card.getCountry() + " </a><br />");
+                out.println(" <b>DeliveryDate: </b><a>" + card.getDeliveryDate() + " </a><br />");
+                out.println(" <b>DeliveryEntity: </b><a>" + card.getDeliveryEntity() + " </a><br />");
+                out.println(" <b>DocumentType: </b><a>" + card.getDocumentType() + " </a><br />");
+                out.println(" <b>Firstname: </b><a>" + card.getFirstname() + " </a><br />");
+                out.println(" <b>Lastname: </b><a>" + card.getLastname() + " </a><br />");
+                out.println(" <b>FirstnameFather: </b><a>" + card.getFirstnameFather() + " </a><br />");
+                out.println(" <b>LastnameFather: </b><a>" + card.getLastnameFather() + " </a><br />");
+                out.println(" <b>FirstnameMother: </b><a>" + card.getFirstnameMother() + " </a><br />");
+                out.println(" <b>LastnameMother: </b><a>" + card.getLastnameMother() + " </a><br />");
+                out.println(" <b>Height: </b><a>" + card.getHeight() + " </a><br />");
+                out.println(" <b>Locale: </b><a>" + card.getLocale() + " </a><br />");
+                out.println(" <b>Mrz1: </b><a>" + card.getMrz1() + " </a><br />");
+                out.println(" <b>Mrz2: </b><a>" + card.getMrz2() + " </a><br />");
+                out.println(" <b>Mrz3: </b><a>" + card.getMrz3() + " </a><br />");
+                out.println(" <b>Nationality: </b><a>" + card.getNationality() + " </a><br />");
+                out.println(" <b>Notes: </b><a>" + card.getNotes() + " </a><br />");
+                out.println(" <b>NumNIF: </b><a>" + card.getNumNIF() + " </a><br />");
+                out.println(" <b>NumSNS: </b><a>" + card.getNumSNS() + " </a><br />");
+                out.println(" <b>NumSS: </b><a>" + card.getNumSS() + " </a><br />");
+                out.println(" <b>Sex: </b><a>" + card.getSex() + " </a><br />");
 
                 out.println("<h2>Your Logged Interactions: </h2>");
-                List interactions = interactionFacadeREST.findAll();
+                //List interactions = interactionFacadeREST.findAll();
+
+                db.connect(databasePath);
+                List<Card_Interaction> interactions = db.get_user_interactions(numBI_current);
+                db.connection_close();
+
                 for (Iterator it = interactions.iterator(); it.hasNext();) {
-                    Interaction elem = (Interaction) it.next();
-                    if (elem.getPersonId().getNumBI().equals((person.getNumBI()))) {
+                    //Interaction elem = (Interaction) it.next();
+                    Card_Interaction elem = (Card_Interaction) it.next();
 
-                        long unixSeconds = Long.valueOf(elem.getTime()).longValue();
-                        Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z"); // the format of your date
+                    
+                    long unixSeconds = Long.valueOf(elem.getTime()).longValue();
+                    Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z"); // the format of your date
 
-                        out.println(" <b> Room code: </b><a>" + elem.getRoomCode() + "</a><b>&nbsp&nbsp&nbsp&nbspTimeStamp: </b><a>" + sdf.format(date)+ "</a><b>&nbsp&nbsp&nbsp&nbsp&nbspAction: </b><a>" + elem.getInteraction() + "</a><br />");
-                        out.println("<p></p>");
-                        //out.println(" <b> Room Code: </b><a>" + elem.getRoomCode() + " </b><br />");
+                    out.println(" <b> Room code: </b><a>" + elem.getRoomCode() + "</a><b>&nbsp&nbsp&nbsp&nbspTimeStamp: </b><a>" + sdf.format(date) + "</a><b>&nbsp&nbsp&nbsp&nbsp&nbspAction: </b><a>" + elem.getInteraction() + "</a><br />");
+                    out.println("<p></p>");
+                    //out.println(" <b> Room Code: </b><a>" + elem.getRoomCode() + " </b><br />");
 
-                        //sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+                    //sdf.setTimeZone(TimeZone.getTimeZone("GMT-4"));
 //sdf.format(date)
-                        //out.println(" <b> Timestamp: </b><a>" + sdf.format(date) + " </b><br />");
-                    }
+                    //out.println(" <b> Timestamp: </b><a>" + sdf.format(date) + " </b><br />");
                 }
 
                 out.println("</body>");
@@ -166,7 +191,11 @@ public class UserPage_servlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NamingException ex) {
+            Logger.getLogger(UserPage_servlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -180,7 +209,11 @@ public class UserPage_servlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NamingException ex) {
+            Logger.getLogger(UserPage_servlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

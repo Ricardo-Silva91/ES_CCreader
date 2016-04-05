@@ -11,7 +11,7 @@ package Card_Reader;
  */
 public class testdb {
     public static void main(String[] args) {
-        Database_connector db = new Database_connector("jdbc:mysql://localhost:3306/es_module", "root", "");
+        Database_connector_mysql db = new Database_connector_mysql("jdbc:mysql://localhost:3306/es_module", "root", "");
         db.connect();
         System.out.println(db.interaction_exists(""));
         db.connection_close();

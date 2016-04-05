@@ -5,7 +5,6 @@ entities/Person.class
 service/CurrentCardFacadeREST.class
 service/ApplicationConfig.class
 entities/Interaction_.class
-web/UserPage_servlet.class
 service/InteractionFacadeREST.class
 entities/CurrentCard.class
 entities/Person_.class

@@ -112,7 +112,7 @@ public class CC_brain {
                 //send data for logging (card inserted)       
                 db.dump_interaction(card, roomCode, "inserted");
                 
-                System.err.println(db.get_current_user());
+                //System.err.println(db.get_current_user());
                 db.connection_close();
                 
                 //wait for card to be removed before resuming action

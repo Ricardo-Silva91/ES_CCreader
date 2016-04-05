@@ -107,10 +107,10 @@ public class CC_brain {
                 //put current id in file for server
                 //card.sendIDToJsonFile(current_card_path);         
                 db.connect(databasePath);
-                db.update_curent_card(card.getNumBI());
 
                 //send data for logging (card inserted)       
                 db.dump_interaction(card, roomCode, "inserted");
+                db.update_curent_card(card.getNumBI());
                 
                 //System.err.println(db.get_current_user());
                 db.connection_close();

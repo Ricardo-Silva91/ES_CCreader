@@ -5,6 +5,9 @@
  */
 package Card_Reader;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.smartcardio.*;
@@ -32,10 +36,12 @@ public class CC_brain {
     private static String roomCode = "4.2.11";
 
     private static String serverUrl = "http://localhost:3000/report";
+    private static String serverIP = "localhost";
+    private final static String QUEUE_NAME = "ES_module_rabbit";
     //for testing
     //private static String current_card_path = separatorsToSystem("/home/rofler/current_card.json");    
     //for release
-    
+
     private static String baseDirectory = System.getProperty("user.home");
     private static String current_card_path = separatorsToSystem(baseDirectory + "/" + "current_card.json");
     private static String current_card_photo_path = separatorsToSystem(baseDirectory + "/" + "current_card_photo.jp2");
@@ -80,15 +86,14 @@ public class CC_brain {
     }
 
     public static void main(String[] args) {
-        
-        
 
         int flag = 0;
 
         CC_IO ccIO = new CC_IO();
+        //RPCClient rabbitClient = new RPCClient(serverIP, QUEUE_NAME);
 
         flag = init();
-        
+
         //Database_connector_mysql db = new Database_connector_mysql("jdbc:mysql://localhost:3306/es_module", "root", "");
         Database_connector_sqlite db = new Database_connector_sqlite();
 
@@ -103,37 +108,47 @@ public class CC_brain {
 
                 //get data
                 CardData card = ccIO.RunAnalisys(current_card_photo_path);
-                
-                //put current id in file for server
-                //card.sendIDToJsonFile(current_card_path);         
-                db.connect(databasePath);
 
-                //send data for logging (card inserted)       
+                //put current id in file for server
+                //card.sendIDToJsonFile(current_card_path);   
+                //send data for logging (card inserted) 
+                /*System.out.println("trying connection");
+                if (rabbitClient.openConnection() == 0) {
+//                String response = rabbitClient.call("a");
+                    System.out.println("tests 10");
+                    String response = rabbitClient.call(card.getJson(roomCode, "inserted"));
+            System.out.println("tests 11");
+                    System.out.println(" [.] Got '" + response + "'");
+                    rabbitClient.close();
+
+                }*/
+
+                sendToServerRabbitMQ(card, "inserted");
+                
+                db.connect(databasePath);
                 db.dump_interaction(card, roomCode, "inserted");
                 db.update_curent_card(card.getNumBI());
-                
-                //System.err.println(db.get_current_user());
                 db.connection_close();
-                
+
                 //wait for card to be removed before resuming action
                 System.out.println("Please remove card");
                 while (terminal.isCardPresent() == true);
+
                 
-                //destroy current id file
+                //send card removed info to server & database
+                sendToServerRabbitMQ(card, "removed");
                 db.connect(databasePath);
                 db.update_curent_card("dummy");
-                
+
                 File f;
                 //f = new File(current_card_path);
                 //f.delete();
                 f = new File(current_card_photo_path);
                 f.delete();
-                
+
                 //send card removed info to server database
                 db.dump_interaction(card, roomCode, "removed");
                 db.connection_close();
-                
-                
 
             } catch (CardException ex) {
                 System.out.println(ex.getMessage());
@@ -159,22 +174,21 @@ public class CC_brain {
             serverConnection.setRequestMethod("POST");
             serverConnection.setRequestProperty("Content-Type", "application/json");
 
-            String serviceInput =  card.getJson(roomCode, interaction);
+            String serviceInput = card.getJson(roomCode, interaction);
 
             System.err.println(serviceInput);
-            
+
             OutputStream outs = serverConnection.getOutputStream();
             outs.write(serviceInput.getBytes());
             outs.flush();
 
-            
             if (serverConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 throw new RuntimeException("Failed : HTTP error code : "
                         + serverConnection.getResponseCode());
             }
 
             serverConnection.getResponseCode();
-            
+
             BufferedReader buf = new BufferedReader(new InputStreamReader(serverConnection.getInputStream()));
 
             String output;
@@ -184,7 +198,7 @@ public class CC_brain {
             }
 
             serverConnection.disconnect();
-            
+
             return 0;
         } catch (MalformedURLException ex) {
             System.err.println("\n\nMalformed URL exception!");
@@ -196,6 +210,30 @@ public class CC_brain {
             //Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        return 1;
+    }
+
+    private static int sendToServerRabbitMQ(CardData card, String interaction) {
+
+        try {
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost(serverIP);
+            Connection connection = factory.newConnection();
+            Channel channel = connection.createChannel();
+
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            String message = card.getJson(roomCode, interaction);
+            channel.basicPublish("", QUEUE_NAME, null, message.getBytes("UTF-8"));
+            System.out.println(" [x] Sent interaction to broker");
+
+            channel.close();
+            connection.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TimeoutException ex) {
+            Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return 1;
     }
 

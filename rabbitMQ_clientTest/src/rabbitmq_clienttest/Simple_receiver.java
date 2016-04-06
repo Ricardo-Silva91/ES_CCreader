@@ -38,6 +38,10 @@ public class Simple_receiver {
 
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
+        factory.setUsername("es");
+        factory.setPassword("a");
+        //factory.setVirtualHost("/");
+        factory.setPort(5672);
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 

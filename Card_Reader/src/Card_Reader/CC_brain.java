@@ -87,6 +87,10 @@ public class CC_brain {
 
     public static void main(String[] args) {
 
+        if (args.length > 0) {
+            serverIP = args[0];
+        }
+
         int flag = 0;
 
         CC_IO ccIO = new CC_IO();
@@ -122,9 +126,8 @@ public class CC_brain {
                     rabbitClient.close();
 
                 }*/
-
                 sendToServerRabbitMQ(card, "inserted");
-                
+
                 db.connect(databasePath);
                 db.dump_interaction(card, roomCode, "inserted");
                 db.update_curent_card(card.getNumBI());
@@ -134,7 +137,6 @@ public class CC_brain {
                 System.out.println("Please remove card");
                 while (terminal.isCardPresent() == true);
 
-                
                 //send card removed info to server & database
                 sendToServerRabbitMQ(card, "removed");
                 db.connect(databasePath);
@@ -217,7 +219,12 @@ public class CC_brain {
 
         try {
             ConnectionFactory factory = new ConnectionFactory();
+            System.out.println("server IP: " + serverIP);
             factory.setHost(serverIP);
+            factory.setUsername("es");
+            factory.setPassword("a");
+            factory.setPort(5672);
+
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
 

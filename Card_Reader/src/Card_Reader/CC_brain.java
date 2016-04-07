@@ -103,7 +103,7 @@ public class CC_brain {
 
         //System.err.println(System.getProperty("os.name"));     
         //System.err.println(System.getProperty("os.name").split(" ")[0].equals("Windows"));
-        while (flag == 0) {
+        mainCycle: while (flag == 0) {
             try {
 
                 //wait for card to be inserted
@@ -112,6 +112,16 @@ public class CC_brain {
 
                 //get data
                 CardData card = ccIO.RunAnalisys(current_card_photo_path);
+
+                if (card == null) {
+                    //wait for card to be removed before resuming action
+                    System.out.println("Please remove card");
+                    while (terminal.isCardPresent() == true);
+                    ccIO = new CC_IO();
+                    flag = init();
+                    
+                    continue mainCycle;
+                }
 
                 //put current id in file for server
                 //card.sendIDToJsonFile(current_card_path);   

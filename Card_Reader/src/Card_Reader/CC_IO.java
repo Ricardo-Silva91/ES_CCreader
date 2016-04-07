@@ -170,7 +170,6 @@ public class CC_IO {
 
             }
 
-            
             /*
             
             // Leitura da fotografia do cidadao - ECF#13
@@ -189,32 +188,16 @@ public class CC_IO {
                 }
             }
 
-            */
+             */
             // Leitura do SOD do cartao - ECF#15
             //System.out.println("SOD: " + new String(pteidlib.pteid.ReadSOD()));
             pteidlib.pteid.Exit(pteidlib.pteid.PTEID_EXIT_LEAVE_CARD);
 
         } catch (pteidlib.PteidException ex) {
             System.out.println(ex.getMessage());
-            int errorNumber = Integer.parseInt(ex.getMessage().split("Error code : -")[1]);
-            switch (errorNumber) {
-                case 1101:
-                    System.out.println("\nErro desconhecido - ??? Problemas com o serviço de leitor de cartões ???\nMessage: ");
-                    break;
-                case 1104:
-                    System.out.println("\n\nNão foi possível aceder ao cartão.\nVerifique se está correctamente inserido no leitor");
-                    break;
-                case 1109:
-                    System.out.println("\n\nAcção cancelada pelo utilizador.\n[Cancel na assinatura]");
-                    break;
-                case 1210:
-                    System.out.println("\n\nO cartão inserido não corresponde a um cartão de cidadão válido.");
-                    break;
-                default:
-                    System.out.println(ex.getMessage());
-                    break;
-            }
-            ex.printStackTrace();
+
+            return null;
+            //ex.printStackTrace();
         }
         return xpto;
     }

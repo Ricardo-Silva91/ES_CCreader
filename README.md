@@ -7,3 +7,7 @@ Card reader (Java),
 Card reader Rest (maven Java),
 rabbitmq imaginary broker (java),
 Rast api (deprecated) (javascript)
+
+
+
+(for the sake of streak)

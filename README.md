@@ -1,9 +1,13 @@
 # ES_CCreader
-trabalho de ES (restful API associated to portuguese citizen card reader)
+trabalho de ES (portuguese citizen card reader app associated with local webpage and remote rabbitMQ broker)
 
 modules:
 
-Card reader (Java)
-Card reader Rest (maven Java)
-rabbitmq imaginary broker (java)
+Card reader (Java),
+Card reader Rest (maven Java),
+rabbitmq imaginary broker (java),
 Rast api (deprecated) (javascript)
+
+
+
+(for the sake of streak)

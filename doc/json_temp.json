@@ -1,0 +1,37 @@
+{
+	"interaction_info":
+	{
+		"interaction":"inserted",
+		"roomCode":"4.2.11",
+		"time":1459202118914
+	},
+	"person_info":
+	{
+		"country":"PRT",
+		"firstname":"TIM",
+		"notes":"",
+		"documentType":"Cartão de Cidadão",
+		"cardVersion":"004.004.20",
+		"numBI":"123456789",
+		"lastnameFather":"TEST",
+		"lastnameMother":"TEST",
+		"numSNS":"111111111",
+		"firstnameMother":"MOTHER",
+		"locale":"Test Street - AVEIRO",
+		"deliveryDate":"12 12 2014",
+		"height":"1,70",
+		"numSS":"11111111111",
+		"sex":"M",
+		"cardNumberPAN":"0000011111111111",
+		"firstnameFather":"FATHER",
+		"birthDate":"11 01 1990",
+		"mrz3":"TTSRRAG<SSDFG<<TIMTIMT<TTTTT<<",
+		"mrz2":"111111111111113PRT<<<<<<<<<<<4",
+		"lastname":"TEST",
+		"mrz1":"U<PRT111111111<1111<<<<<<<<<<<",
+		"nationality":"PRT",
+		"numNIF":"111111111",
+		"cardNumber":"11111111 0 ZYB",
+		"deliveryEntity":"República Portuguesa"
+	}
+}

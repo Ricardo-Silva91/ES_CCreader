@@ -8,6 +8,7 @@ package rabbitmq_clienttest;
 import Util.CardData;
 import Util.Card_Interaction;
 import Util.Database_connector_sqlite;
+import Util.Rabbit_person;
 import com.rabbitmq.client.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -71,7 +72,9 @@ public class Simple_receiver {
             JSONObject json_o;
             json_o = (JSONObject) parser.parse(message);
 
-            JSONObject interaction = (JSONObject) json_o.get("interaction_info");
+            Rabbit_person rabbit_person = new Rabbit_person(json_o.get("interaction").toString(), json_o.get("roomCode").toString(), json_o.get("time").toString(), json_o.get("id").toString());
+            
+            /*JSONObject interaction = (JSONObject) json_o.get("interaction_info");
             JSONObject person = (JSONObject) json_o.get("person_info");
 
             Card_Interaction card_interaction = new Card_Interaction(interaction.get("interaction").toString(), interaction.get("roomCode").toString(), interaction.get("time").toString(), person.get("numBI").toString());
@@ -106,15 +109,16 @@ public class Simple_receiver {
                     person.get("mrz3").toString(),
                     person.get("notes").toString(),
                     ""
-            );
-
+            );*/
             db.connect(databasePath);
-            db.dump_interaction(card, card_interaction.getRoomCode(), card_interaction.getInteraction());
+
+            //db.dump_interaction(card, card_interaction.getRoomCode(), card_interaction.getInteraction());
+            db.dump_rabbit_interaction(rabbit_person);
+            
             db.connection_close();
-            
+
             System.out.println("interaction saved to database");
-            
-            
+
         } catch (org.json.simple.parser.ParseException ex) {
             Logger.getLogger(Simple_receiver.class.getName()).log(Level.SEVERE, null, ex);
         }

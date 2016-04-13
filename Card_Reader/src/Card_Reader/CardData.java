@@ -45,8 +45,9 @@ public class CardData {
     private String mrz2;
     private String mrz3;
     private String notes;
+    private String authentication;
 
-    public CardData(String firstname, String lastname, String birthDate, String height, String sex, String firstnameFather, String lastnameFather, String firstnameMother, String lastnameMother, String numBI, String numNIF, String numSNS, String numSS, String cardNumber, String cardNumberPAN, String cardVersion, String nationality, String country, String documentType, String deliveryDate, String deliveryEntity, String locale, String mrz1, String mrz2, String mrz3, String notes) {
+    public CardData(String firstname, String lastname, String birthDate, String height, String sex, String firstnameFather, String lastnameFather, String firstnameMother, String lastnameMother, String numBI, String numNIF, String numSNS, String numSS, String cardNumber, String cardNumberPAN, String cardVersion, String nationality, String country, String documentType, String deliveryDate, String deliveryEntity, String locale, String mrz1, String mrz2, String mrz3, String notes, String authentication) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthDate = birthDate;
@@ -73,6 +74,7 @@ public class CardData {
         this.mrz2 = mrz2;
         this.mrz3 = mrz3;
         this.notes = notes;
+        this.authentication = authentication;
     }
 
     public String getFirstname() {
@@ -177,6 +179,10 @@ public class CardData {
 
     public String getNotes() {
         return notes;
+    }
+
+    public String getAuthentication() {
+        return authentication;
     }
 
     public void sendToJsonFile(String outFile) {

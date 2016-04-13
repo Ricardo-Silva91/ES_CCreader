@@ -5,6 +5,7 @@
  */
 package Util;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,9 +13,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.List;
 
 /**
  *
@@ -97,6 +99,29 @@ public class Database_connector_sqlite {
 
         } catch (SQLException ex) {
             //Logger.getLogger(Database_connector_mysql.class.getName()).log(Level.SEVERE, null, ex);
+            res = -1;
+        }
+
+        return res;
+    }
+
+    public int getPersonId(String numBI) {
+
+        int res = 0;
+
+        try {
+            PreparedStatement pst = con.prepareStatement("SELECT rowid from person where numBI = ?");
+            pst.setString(1, numBI);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                res = rs.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            //Logger.getLogger(Database_connector_mysql.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("cannot get person internal id");
             res = -1;
         }
 
@@ -269,7 +294,7 @@ public class Database_connector_sqlite {
 
     public List<Card_Interaction> get_user_interactions(String person_id) {
 
-        List<Card_Interaction> res = new ArrayList<Card_Interaction>();
+        List<Card_Interaction> res = new ArrayList<>();
 
         try {
             PreparedStatement pst = con.prepareStatement("SELECT interaction,roomCode,time from interaction where person_id=?");
@@ -291,20 +316,38 @@ public class Database_connector_sqlite {
     }
 
     public void update_auth(String person_id, String pass) {
-        
+
         try {
             PreparedStatement pst = con.prepareStatement("update person set Authentication=? where numBI=?");
             pst.setString(1, person_id);
             pst.setString(2, pass);
 
             pst.executeUpdate();
-            
 
         } catch (SQLException ex) {
             //Logger.getLogger(Database_connector_mysql.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Error: cannot update pass");
-            
+
         }
+    }
+
+    public void dump_rabbit_interaction(Rabbit_person rabbit_person) {
+
+        try {
+            // insert interaction
+            PreparedStatement pst_int = con.prepareStatement("INSERT into interaction(interaction, roomCode, time, person_id) values(?,?,?,?)");
+
+            pst_int.setString(1, rabbit_person.getInteraction());
+            pst_int.setString(2, rabbit_person.getRoomCode());
+            pst_int.setString(3, rabbit_person.getTime());
+            pst_int.setString(4, rabbit_person.getPerson_id());
+
+            pst_int.executeUpdate();
+        } catch (SQLException ex) {
+            //Logger.getLogger(Database_connector_sqlite.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Cannot dump rabbit person");
+        }
+
     }
 
     /**

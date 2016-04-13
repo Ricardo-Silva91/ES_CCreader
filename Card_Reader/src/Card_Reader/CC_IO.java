@@ -83,7 +83,7 @@ public class CC_IO {
                 idData.sex, idData.firstnameFather, idData.nameFather, idData.firstnameMother, idData.nameMother,
                 idData.numBI, idData.numNIF, idData.numSNS, idData.numSS, idData.cardNumber, idData.cardNumberPAN, idData.cardVersion,
                 idData.nationality, idData.country, idData.documentType, idData.deliveryDate, idData.deliveryEntity, idData.locale,
-                idData.mrz1, idData.mrz2, idData.mrz3, idData.notes);
+                idData.mrz1, idData.mrz2, idData.mrz3, idData.notes, "");
 
         return card;
 

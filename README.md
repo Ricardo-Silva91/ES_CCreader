@@ -10,4 +10,4 @@ Rast api (deprecated) (javascript)
 
 
 
-(for the sake of streak)
+(for the sake of streak2)

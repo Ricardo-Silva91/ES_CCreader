@@ -1,15 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Card_Reader;
 
 /**
- *
+ * class used for testing purposes (not for official releases)
  * @author rofler
  */
 public class testdb {
+    
+    /**
+     * main function
+     * @param args 
+     */
     public static void main(String[] args) {
         Database_connector_mysql db = new Database_connector_mysql("jdbc:mysql://localhost:3306/es_module", "root", "");
         db.connect();

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Card_Reader;
 
 import java.io.FileNotFoundException;
@@ -14,7 +9,7 @@ import pteidlib.PTEID_ID;
 import pteidlib.pteid;
 
 /**
- *
+ * class used to take information from card currently inserted in the reader.
  * @author Ricardo
  */
 public class CC_IO {
@@ -37,6 +32,11 @@ public class CC_IO {
 
     static int debug_morada = 0;
 
+    
+    /**
+     * this method prints personal information to console
+     * @param idData pteid object hat holds personal data
+     */
     public void PrintIDData(PTEID_ID idData) {
         StringBuilder sb = new StringBuilder();
 
@@ -76,6 +76,11 @@ public class CC_IO {
         System.out.println("Dados do cartão:\n" + sb.toString());
     }
 
+    /**
+     * this method gets personal data from card and exports it as a CardData object
+     * @param idData pteid object hat holds personal data
+     * @return CardData object with personal info
+     */
     public CardData GetIDData(PTEID_ID idData) {
         //StringBuilder sb = new StringBuilder();
 
@@ -89,6 +94,11 @@ public class CC_IO {
 
     }
 
+    
+    /**
+     * this method prints address data to the console
+     * @param adData pteid object that hold address data
+     */
     public void PrintAddressData(PTEID_ADDR adData) {
         if (adData.addrType == "N") {
             System.out.println("Tipo de morada : National");
@@ -105,6 +115,12 @@ public class CC_IO {
         }
     }
 
+    
+    /**
+     * method used by main class to read card and get personal information
+     * @param photoPath path to the file to be written with the jp2 photo extracted from the card (not in use at the moment)
+     * @return CardData object with the information extracted from the card 
+     */
     public CardData RunAnalisys(String photoPath) {
 
         CardData xpto = null;

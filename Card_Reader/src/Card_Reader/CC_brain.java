@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Card_Reader;
 
 import com.rabbitmq.client.Channel;
@@ -26,6 +21,7 @@ import static org.apache.commons.io.FilenameUtils.separatorsToSystem;
 import org.json.JSONObject;
 
 /**
+ * main class, controls the card reader and the messaging
  *
  * @author rofler
  */
@@ -33,18 +29,57 @@ public class CC_brain {
 
     static int debug = 0;
 
+    /**
+     * smart card reader terminal
+     */
     private static CardTerminal terminal;
+
+    /**
+     * room code (different for every room)
+     */
     private static String roomCode = "4.2.11";
 
+    /**
+     * server url (for REST broker)
+     */
     private static String serverUrl = "http://localhost:3000/report";
+
+    /**
+     * server IP (for rabbitMQ broker)
+     */
     private static String serverIP = "localhost";
+
+    /**
+     * queue name (for rabbitMQ broker)
+     */
     private final static String QUEUE_NAME = "ES_module_rabbit";
 
+    /**
+     * base directory path (used to create database and temporary files path)
+     */
     private static String baseDirectory = System.getProperty("user.home");
+
+    /**
+     * current card file (not used at the moment)
+     */
     private static String current_card_path = separatorsToSystem(baseDirectory + "/" + "current_card.json");
+
+    /**
+     * path to the current card's jp2 image path (not used at the moment)
+     */
     private static String current_card_photo_path = separatorsToSystem(baseDirectory + "/" + "current_card_photo.jp2");
+
+    /**
+     * path to the sqlite database file
+     */
     private static String databasePath = separatorsToSystem(baseDirectory + "/" + "es_module.db");
 
+    /**
+     * this method initiates the card reader hardware interaction, must be
+     * executed at the beginning of the program's life cycle.
+     *
+     * @return 0 if success !0 if fail
+     */
     private static int init() {
 
         int res = 0;
@@ -81,6 +116,11 @@ public class CC_brain {
         return res;
     }
 
+    /**
+     * main method
+     *
+     * @param args may contain server IP and/or room code
+     */
     public static void main(String[] args) {
 
         if (args.length > 0) {
@@ -156,7 +196,17 @@ public class CC_brain {
 
     }
 
+    /**
+     * method used to send full card data and interaction information to broker
+     * (deprecated)
+     *
+     * @param card current card data
+     * @param interaction type of interaction
+     * @return 0 if success !0 if fail
+     */
     private static int sendToServerRabbitMQ(CardData card, String interaction) {
+
+        int res = 0;
 
         try {
             ConnectionFactory factory = new ConnectionFactory();
@@ -178,14 +228,29 @@ public class CC_brain {
             connection.close();
 
         } catch (IOException ex) {
-            Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("IO exception");
+            ex.printStackTrace();
+            res = -1;
         } catch (TimeoutException ex) {
-            Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("time out exception");
+            ex.printStackTrace();
+            res = -1;
         }
-        return 1;
+        return res;
     }
 
+    /**
+     * method used to send event information to broker
+     *
+     * @param person_id internal id associated with card currently in reader
+     * @param interaction type of interaction
+     * @return 0 if success !0 if fail
+     */
     private static int sendToServerRabbitMQbrief(int person_id, String interaction) {
+
+        int res = 0;
 
         try {
             ConnectionFactory factory = new ConnectionFactory();
@@ -199,9 +264,9 @@ public class CC_brain {
             Channel channel = connection.createChannel();
 
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            
+
             String message = makeJson(person_id, roomCode, interaction);
-            
+
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes("UTF-8"));
             System.out.println(" [x] Sent interaction to broker");
             //System.out.println(" Sent: " + message);
@@ -210,29 +275,50 @@ public class CC_brain {
             connection.close();
 
         } catch (IOException ex) {
-            Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("IO exception");
+            ex.printStackTrace();
+            res = -1;
         } catch (TimeoutException ex) {
-            Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("time out exception");
+            ex.printStackTrace();
+            res = -1;
         }
-        return 1;
+        return res;
     }
-    
-    private static String makeJson(int person_id, String roomCode, String interaction)
-    {
+
+    /**
+     * method that turn event data into json string
+     *
+     * @param person_id internal id associated with card currently in reader
+     * @param roomCode room code
+     * @param interaction type of interaction
+     * @return json string of event
+     */
+    private static String makeJson(int person_id, String roomCode, String interaction) {
         String res = null;
-        
+
         JSONObject card_js = new JSONObject();
         card_js.put("id", person_id);
         card_js.put("interaction", interaction);
         card_js.put("roomCode", roomCode);
         card_js.put("time", System.currentTimeMillis());
         res = card_js.toString();
-        
-        
+
         return res;
     }
-    
+
+    /**
+     * method used to send event to REST server (deprecated)
+     *
+     * @param card card information
+     * @param interaction type of interaction
+     * @return 0 if success !0 if fail
+     */
     private static int sendToServer(CardData card, String interaction) {
+
+        int res = 0;
 
         try {
             URL url;
@@ -271,14 +357,16 @@ public class CC_brain {
         } catch (MalformedURLException ex) {
             System.err.println("\n\nMalformed URL exception!");
             ex.printStackTrace();
+            res = -1;
             //Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             System.err.println("\n\nI-O exception!");
             ex.printStackTrace();
+            res = -1;
             //Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return 1;
+        return res;
     }
 
 }

@@ -213,224 +213,224 @@ public class CardData {
     }
 
     /**
-     *
-     * @return
+     * getter for first name of the card's owner
+     * @return first name of the card's owner
      */
     public String getFirstname() {
         return firstname;
     }
 
     /**
-     *
-     * @return
+     * getter for last name of the card's owner
+     * @return last name of the card's owner
      */
     public String getLastname() {
         return lastname;
     }
 
     /**
-     *
-     * @return
+     * getter for birth date of the card's owner
+     * @return birth date of the card's owner
      */
     public String getBirthDate() {
         return birthDate;
     }
 
     /**
-     *
-     * @return
+     * getter for height of the card's owner
+     * @return height of the card's owner
      */
     public String getHeight() {
         return height;
     }
 
     /**
-     *
-     * @return
+     * getter for sex of the card's owner
+     * @return sex of the card's owner
      */
     public String getSex() {
         return sex;
     }
 
     /**
-     *
-     * @return
+     * getter for first name of the card's owner's father
+     * @return first name of the card's owner's father
      */
     public String getFirstnameFather() {
         return firstnameFather;
     }
 
     /**
-     *
-     * @return
+     * getter for last name of the card's owner's father
+     * @return last name of the card's owner's father
      */
     public String getLastnameFather() {
         return lastnameFather;
     }
 
     /**
-     *
-     * @return
+     * getter for first name of the card's owner's mother
+     * @return first name of the card's owner's mother
      */
     public String getFirstnameMother() {
         return firstnameMother;
     }
 
     /**
-     *
-     * @return
+     * getter for last name of the card's owner's mother
+     * @return last name of the card's owner's mother
      */
     public String getLastnameMother() {
         return lastnameMother;
     }
 
     /**
-     *
-     * @return
+     * getter for BI number of the card
+     * @return BI number of the card
      */
     public String getNumBI() {
         return numBI;
     }
 
     /**
-     *
-     * @return
+     * getter for NIF number of the card
+     * @return NIF number of the card
      */
     public String getNumNIF() {
         return numNIF;
     }
 
     /**
-     *
-     * @return
+     * getter for SNS number of the card
+     * @return SNS number of the card
      */
     public String getNumSNS() {
         return numSNS;
     }
 
     /**
-     *
-     * @return
+     * getter for SS number of the card
+     * @return SS number of the card
      */
     public String getNumSS() {
         return numSS;
     }
 
     /**
-     *
-     * @return
+     * getter for official number of the card
+     * @return official number of the card
      */
     public String getCardNumber() {
         return cardNumber;
     }
 
     /**
-     *
-     * @return
+     * getter for official PAN number of the card
+     * @return official PAN number of the card
      */
     public String getCardNumberPAN() {
         return cardNumberPAN;
     }
 
     /**
-     *
-     * @return
+     * getter for card version
+     * @return card version
      */
     public String getCardVersion() {
         return cardVersion;
     }
 
     /**
-     *
-     * @return
+     * getter for nationality of the card's owner
+     * @return nationality of the card's owner
      */
     public String getNationality() {
         return nationality;
     }
 
     /**
-     *
-     * @return
+     * getter for country of the card's owner
+     * @return country of the card's owner
      */
     public String getCountry() {
         return country;
     }
 
     /**
-     *
-     * @return
+     * getter for document type
+     * @return document type
      */
     public String getDocumentType() {
         return documentType;
     }
 
     /**
-     *
-     * @return
+     * getter for delivery date of the card
+     * @return delivery date of the card
      */
     public String getDeliveryDate() {
         return deliveryDate;
     }
 
     /**
-     *
-     * @return
+     * getter for delivery entity of the card
+     * @return delivery entity of the card
      */
     public String getDeliveryEntity() {
         return deliveryEntity;
     }
 
     /**
-     *
-     * @return
+     * getter for locale of the card
+     * @return locale of the card
      */
     public String getLocale() {
         return locale;
     }
 
     /**
-     *
-     * @return
+     * getter for mrz1 of the card
+     * @return mrz1 of the card
      */
     public String getMrz1() {
         return mrz1;
     }
 
     /**
-     *
-     * @return
+     * getter for mrz2 of the card
+     * @return mrz2 of the card
      */
     public String getMrz2() {
         return mrz2;
     }
 
     /**
-     *
-     * @return
+     * getter for mrz3 of the card
+     * @return mrz3 of the card
      */
     public String getMrz3() {
         return mrz3;
     }
 
     /**
-     *
-     * @return
+     * getter for notes saved on the card
+     * @return notes saved on the card
      */
     public String getNotes() {
         return notes;
     }
 
     /**
-     *
-     * @return
+     * getter for internal password
+     * @return internal password
      */
     public String getAuthentication() {
         return authentication;
     }
 
     /**
-     *
-     * @param outFile
+     * method used to send card data to json file
+     * @param outFile path to the file to be written
      */
     public void sendToJsonFile(String outFile) {
         JSONObject obj = new JSONObject();
@@ -482,8 +482,8 @@ public class CardData {
     }
 
     /**
-     *
-     * @param outFile
+     * method used to create json file with only the BI number
+     * @param outFile path to the file to be written
      */
     public void sendIDToJsonFile(String outFile) {
         JSONObject obj = new JSONObject();
@@ -510,10 +510,10 @@ public class CardData {
     }
 
     /**
-     *
-     * @param roomCode
-     * @param interactionType
-     * @return
+     * method used to get json string with card data and interaction information
+     * @param roomCode code of the room with the reader (i.e: 4.2.11)
+     * @param interactionType type of interaction (inserted/removed)
+     * @return string with the resulting json
      */
     public String getJson(String roomCode, String interactionType) {
         JSONObject card_js = new JSONObject();

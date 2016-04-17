@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Card_Reader;
 
 import java.sql.Connection;
@@ -15,27 +10,65 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Class used to create and use connection to mySQL database
  *
  * @author rofler
  */
 public class Database_connector_mysql {
 
+    /**
+     * address of the database
+     */
     private static String url;
+
+    /**
+     * username for database access
+     */
     private static String user;
+
+    /**
+     * password for database access
+     */
     private static String pass;
 
+    /**
+     * connection object
+     */
     private Connection con = null;
+
+    /**
+     * statement (query) object
+     */
     private Statement st = null;
+
+    /**
+     * query results object
+     */
     private ResultSet rs = null;
 
+    /**
+     * connection already established flag
+     */
     private int connection_established = 0;
 
+    /**
+     * class constructor
+     *
+     * @param url address of the database
+     * @param user username for database access
+     * @param pass password for database access
+     */
     public Database_connector_mysql(String url, String user, String pass) {
         this.url = url;
         this.user = user;
         this.pass = pass;
     }
 
+    /**
+     * method used to establis a connection to the database
+     *
+     * @return 0 if success !0 if fail
+     */
     public int connect() {
         try {
             con = DriverManager.getConnection(url, user, pass);
@@ -53,6 +86,11 @@ public class Database_connector_mysql {
         return 0;
     }
 
+    /**
+     * method used to close database connection
+     *
+     * @return 0 if success !0 if fail
+     */
     public int connection_close() {
         try {
             if (rs != null) {
@@ -75,6 +113,12 @@ public class Database_connector_mysql {
         return 0;
     }
 
+    /**
+     * check if person data is already in the database
+     *
+     * @param id BI number of person
+     * @return 1 if person exists 0 if not -1 for exceptions
+     */
     public int person_exists(String id) {
 
         int res = 0;
@@ -102,6 +146,12 @@ public class Database_connector_mysql {
         return res;
     }
 
+    /**
+     * check if interaction is already in the database
+     *
+     * @param time time stamp(id) of interaction
+     * @return 1 if interaction exists 0 if not -1 for exceptions
+     */
     public int interaction_exists(String time) {
 
         int res = 0;
@@ -129,6 +179,14 @@ public class Database_connector_mysql {
         return res;
     }
 
+    /**
+     * method to insert interaction and/or person in the database
+     *
+     * @param card person data
+     * @param roomCode room code
+     * @param interaction interaction type
+     * @return 0 if success !0 if fail
+     */
     public int dump_interaction(CardData card, String roomCode, String interaction) {
 
         int res = 0;
@@ -176,11 +234,11 @@ public class Database_connector_mysql {
 
             pst_int.setString(1, interaction);
             pst_int.setString(2, roomCode);
-            pst_int.setString(3, String.valueOf(System.currentTimeMillis()) );
+            pst_int.setString(3, String.valueOf(System.currentTimeMillis()));
             pst_int.setString(4, card.getNumBI());
-            
+
             pst_int.executeUpdate();
-            
+
         } catch (SQLException ex) {
             System.err.println("error uploading person");
             res = -1;
@@ -188,7 +246,13 @@ public class Database_connector_mysql {
 
         return res;
     }
-    
+
+    /**
+     * upadte current card in the reader as seen by the server application
+     *
+     * @param numBI BI number of card inserted or 'dummy' for no card
+     * @return 0 if success !0 if fail
+     */
     public int update_curent_card(String numBI) {
 
         int res = 0;
@@ -199,15 +263,13 @@ public class Database_connector_mysql {
                 //insert person
                 PreparedStatement pst = con.prepareStatement("UPDATE current_card SET person_id=? ;");
                 pst.setString(1, numBI);
-                
-                
+
                 pst.executeUpdate();
 
             } else {
                 System.out.println("This person does not exist!");
             }
 
-            
         } catch (SQLException ex) {
             System.err.println("error uploading current card");
             res = -1;

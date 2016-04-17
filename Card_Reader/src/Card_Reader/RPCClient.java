@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Card_Reader;
 
 import com.rabbitmq.client.ConnectionFactory;
@@ -19,23 +14,59 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Class used to communicate with rabbitMQ broker (deprecated: only for a
+ * circumstance where the broker replies to messages)
  *
  * @author rofler
  */
 public class RPCClient {
 
+    /**
+     * connection object
+     */
     private Connection connection;
+
+    /**
+     * channel object
+     */
     private Channel channel;
+
+    /**
+     * name of queue used for requests
+     */
     private String requestQueueName;
+
+    /**
+     * name of queue used for replies
+     */
     private String replyQueueName;
+
+    /**
+     * consumer of queue
+     */
     private QueueingConsumer consumer;
+
+    /**
+     * IP address of broker
+     */
     private String hostIP;
 
+    /**
+     * class constructor
+     *
+     * @param host IP of host
+     * @param requestQueueName request queue name
+     */
     public RPCClient(String host, String requestQueueName) {
         this.requestQueueName = requestQueueName;
         this.hostIP = host;
     }
 
+    /**
+     * establish connection to host
+     *
+     * @return 0 if success !0 if fail
+     */
     public int openConnection() {
         try {
             ConnectionFactory factory = new ConnectionFactory();
@@ -44,7 +75,7 @@ public class RPCClient {
             factory.setHost(hostIP);
             connection = factory.newConnection();
             channel = connection.createChannel();
-            
+
             replyQueueName = channel.queueDeclare().getQueue();
             consumer = new QueueingConsumer(channel);
             channel.basicConsume(replyQueueName, true, consumer);
@@ -58,6 +89,12 @@ public class RPCClient {
         }
     }
 
+    /**
+     * send message to host
+     *
+     * @param message body of message
+     * @return response from host
+     */
     public String call(String message) {
         String response = null;
         try {
@@ -77,7 +114,6 @@ public class RPCClient {
                     break;
                 }
             }
-            
 
         } catch (IOException ex) {
             Logger.getLogger(RPCClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,6 +127,9 @@ public class RPCClient {
         return response;
     }
 
+    /**
+     * close connection to host
+     */
     public void close() {
         try {
             connection.close();

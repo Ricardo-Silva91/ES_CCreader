@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Card_Reader;
 
 import java.sql.Array;
@@ -19,13 +14,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Class used to create and use connection to sqlite database
  *
  * @author rofler
  */
 public class Database_connector_sqlite {
 
+    /**
+     * connection object
+     */
     private static Connection con;
 
+    /**
+     * class constructor
+     */
     public Database_connector_sqlite() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -37,7 +39,7 @@ public class Database_connector_sqlite {
     }
 
     /**
-     * Create con to database.
+     * establish connection to database.
      *
      * @param PathToDB path to the sqlite database file
      */
@@ -51,6 +53,12 @@ public class Database_connector_sqlite {
         }
     }
 
+    /**
+     * check if person data is already in the database
+     *
+     * @param id BI number of person
+     * @return 1 if person exists 0 if not -1 for exceptions
+     */
     public int person_exists(String id) {
 
         int res = 0;
@@ -78,6 +86,12 @@ public class Database_connector_sqlite {
         return res;
     }
 
+    /**
+     * check if interaction is already in the database
+     *
+     * @param time time stamp(id) of interaction
+     * @return 1 if interaction exists 0 if not -1 for exceptions
+     */
     public int interaction_exists(String time) {
 
         int res = 0;
@@ -105,6 +119,12 @@ public class Database_connector_sqlite {
         return res;
     }
 
+    /**
+     * get internal id related to BI number
+     *
+     * @param numBI BI number
+     * @return 0 if success !0 if fail
+     */
     public int getPersonId(String numBI) {
 
         int res = 0;
@@ -128,6 +148,14 @@ public class Database_connector_sqlite {
         return res;
     }
 
+    /**
+     * method to insert interaction and/or person in the database
+     *
+     * @param card person data
+     * @param roomCode room code
+     * @param interaction interaction type
+     * @return 0 if success !0 if fail
+     */
     public int dump_interaction(CardData card, String roomCode, String interaction) {
 
         int res = 0;
@@ -188,6 +216,12 @@ public class Database_connector_sqlite {
         return res;
     }
 
+    /**
+     * upadte current card in the reader as seen by the server application
+     *
+     * @param numBI BI number of card inserted or 'dummy' for no card
+     * @return 0 if success !0 if fail
+     */
     public int update_curent_card(String numBI) {
 
         int res = 0;
@@ -213,6 +247,11 @@ public class Database_connector_sqlite {
         return res;
     }
 
+    /**
+     * git BI number of card currently in reader ('dummy' if no card)
+     *
+     * @return BI number of currently inserted card
+     */
     public String get_current_user() {
 
         String res = null;
@@ -234,6 +273,12 @@ public class Database_connector_sqlite {
         return res;
     }
 
+    /**
+     * get the personal data related to BI number inserted as argument
+     *
+     * @param person_id BI number to search
+     * @return CardData object with information
+     */
     public CardData get_person_info(String person_id) {
 
         CardData card = null;
@@ -292,6 +337,13 @@ public class Database_connector_sqlite {
         return card;
     }
 
+    /**
+     * method used to get list of interactions from person associated with BI
+     * number provided
+     *
+     * @param person_id BI number
+     * @return List of Card_Interaction objects
+     */
     public List<Card_Interaction> get_user_interactions(String person_id) {
 
         List<Card_Interaction> res = new ArrayList<>();
@@ -315,6 +367,12 @@ public class Database_connector_sqlite {
         return res;
     }
 
+    /**
+     * updated internal password associated with the BI number provided
+     *
+     * @param person_id BI number
+     * @param pass new password
+     */
     public void update_auth(String person_id, String pass) {
 
         try {

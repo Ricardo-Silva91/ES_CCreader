@@ -4,10 +4,19 @@
         <servlet-name>UserPage_servlet</servlet-name>
         <servlet-class>web.UserPage_servlet</servlet-class>
     </servlet>
+<!--    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>-->
     <servlet-mapping>
         <servlet-name>UserPage_servlet</servlet-name>
         <url-pattern>/UserPage_servlet/*</url-pattern>
     </servlet-mapping>
+<!--    <servlet-mapping>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/crunchify/*</url-pattern>
+    </servlet-mapping>-->
     <session-config>
         <session-timeout>
             30

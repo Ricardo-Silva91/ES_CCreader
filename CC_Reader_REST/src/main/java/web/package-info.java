@@ -1,4 +1,0 @@
-/**
- * servlets package
- */
-package web;

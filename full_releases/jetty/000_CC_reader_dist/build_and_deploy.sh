@@ -17,8 +17,8 @@ else
 fi
 
 #copy mave data to webapp directory
-cp -r CC_Reader_REST ../webapps
-cp CC_Reader_REST.war ../webapps
+cp -r CC_Local_Server-1 ../webapps
+cp CC_Local_Server-1.war ../webapps
 
 #start jetty server
 cd ..

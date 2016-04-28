@@ -7,3 +7,6 @@ cp CC_Local_Server/target/CC_Local_Server-1.war full_releases/jetty/000_CC_reade
 cp -r CC_Local_Server/target/CC_Local_Server-1/ full_releases/jetty/000_CC_reader_dist/CC_Local_Server-1
 
 cp rabbitMQ_clientTest/dist/rabbitMQ_clientTest.jar full_releases/broker/rabbitMQ_clientTest.jar 
+
+cp Rester/target/Rester-1.war full_releases/jetty/000_CC_reader_dist 
+cp -r Rester/target/Rester-1 full_releases/jetty/000_CC_reader_dist

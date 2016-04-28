@@ -56,3 +56,6 @@ jspm_packages
 /card_readerREST/target/
 /CC_Local_Server/target/
 /deprecated/CC_Reader_REST/target/
+/ES_tests/nbproject/private/
+/ES_tests/target/
+/Rester/target/

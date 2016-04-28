@@ -30,7 +30,12 @@ public class App {
         try {
             jettyServer.start();
             jettyServer.join();
-        } finally {
+        }
+        catch(Exception ex)
+        {
+            System.err.println("error");
+        }
+        finally {
             jettyServer.destroy();
         }
     }

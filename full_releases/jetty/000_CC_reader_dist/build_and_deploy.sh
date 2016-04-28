@@ -19,6 +19,8 @@ fi
 #copy mave data to webapp directory
 cp -r CC_Local_Server-1 ../webapps
 cp CC_Local_Server-1.war ../webapps
+cp Rester-1.war ../webapps 
+cp -r Rester-1 ../webapps
 
 #start jetty server
 cd ..

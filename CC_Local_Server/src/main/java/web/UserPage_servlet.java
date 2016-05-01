@@ -174,7 +174,7 @@ public class UserPage_servlet extends HttpServlet {
                     out.println("<title>CC Card Reader - First log</title>");
                     out.println("</head>");
                     out.println("<body>");
-                    out.println("<h1>Hello, " + card.getFirstname() + " this is your first log</h1>");
+                    out.println("<h1 id=\"greets\" >Hello, " + card.getFirstname() + " this is your first log</h1>");
 
                     out.println(" <b> Please insert your future password </b><br />");
 
@@ -198,7 +198,7 @@ public class UserPage_servlet extends HttpServlet {
                     out.println("<title>CC Card Reader - log</title>");
                     out.println("</head>");
                     out.println("<body>");
-                    out.println("<h1>Hello, " + card.getFirstname() + " please log in</h1>");
+                    out.println("<h1 id=\"greets\" >Hello, " + card.getFirstname() + " please log in</h1>");
 
                     out.println("<form>");
                     out.println("<b> password:</b><br /><input type='password' name='pass'></input> <br />");

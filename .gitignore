@@ -59,3 +59,11 @@ jspm_packages
 /ES_tests/nbproject/private/
 /ES_tests/target/
 /Rester/target/
+/Card_Reader_4Test/nbproject/private/
+/Card_Reader_4Test/build/
+/rabbitMQ_clientTest_4Test/nbproject/private/
+/Card_Reader_4Test/dist/
+/com.tunaEnterprises_CC_Local_Server_4Test/target/
+/Rester_4Test/target/
+/rabbitMQ_clientTest_4Test/build/
+/rabbitMQ_clientTest_4Test/dist/

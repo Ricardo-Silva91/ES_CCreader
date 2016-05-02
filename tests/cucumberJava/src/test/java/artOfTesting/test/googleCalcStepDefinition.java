@@ -15,21 +15,54 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import Util.Database_connector_sqlite;
+import static org.apache.commons.io.FilenameUtils.separatorsToSystem;
+
 public class googleCalcStepDefinition {
 	
 	
 	protected WebDriver driver;
 	
+        static String currentCardId = "";
+        static String CurentCardFirstName = "";
+        
+        private static String baseDirectory = System.getProperty("user.home");
+        private static Database_connector_sqlite db;
+        private static String databasePath = separatorsToSystem(baseDirectory + "/" + "es_module_rabbit_tests.db");
+        
 	 @Before
 	    public void setup() {
 	        driver = new ChromeDriver();//FirefoxDriver();
+                db = new Database_connector_sqlite();
+                db.connect(databasePath);
+                currentCardId = db.get_current_user();
+                db.connection_close();
 	}
 		
+            
+        @Given("^new event 1$")
+        public void new_event()
+        {
+            String newCard = currentCardId;
+            while(newCard.equals(currentCardId))
+            {
+                db.connect(databasePath);
+                newCard = db.get_current_user();
+                db.connection_close();
+            }
+            currentCardId=newCard;
+        }
+            
 	@Given("^I open user page$")
 	public void I_open_google() {
 		//Set implicit wait of 10 seconds and launch google
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		driver.get("http://localhost:3389/CC_Local_Server-1/UserPage_servlet");
+                
+                WebElement calculatorTextBox = driver.findElement(By.id("greets"));
+		CurentCardFirstName = calculatorTextBox.getText();
+                
+                
 	}
 	
 	@When("^I enter \"([^\"]*)\" in search textbox$")
@@ -46,15 +79,18 @@ public class googleCalcStepDefinition {
 		searchButton.click();
 	}
 	
-	@Then("^I should get result as \"([^\"]*)\"$")
-	public void I_should_get_correct_result(String expectedResult) {
+	@Then("^I should get right result$")
+	public void I_should_get_correct_result() {
 		//Get result from calculator
-		WebElement calculatorTextBox = driver.findElement(By.id("greets"));
+		
+                Assert.assertEquals(CurentCardFirstName, "Hello, HUGO GONÇALO this is your first log");
+                
+                /*WebElement calculatorTextBox = driver.findElement(By.id("greets"));
 		String result = calculatorTextBox.getText();
 				
 		//Verify that result of 2+2 is 4
 		Assert.assertEquals(result, expectedResult);
-		
+		*/
 		driver.close();
 	}
 	

@@ -149,8 +149,8 @@ public class CC_brain {
 
                 //wait for random time
                 
-                long nowTime = System.currentTimeMillis();
-                int timeToWait = (5 + new Random().nextInt(5)) * 1000;
+               /* long nowTime = System.currentTimeMillis();
+                int timeToWait = (10 + new Random().nextInt(10)) * 1000;
                 
                 while(System.currentTimeMillis() < nowTime+timeToWait)
                 {
@@ -159,15 +159,19 @@ public class CC_brain {
                     } catch (InterruptedException ex) {
                         Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
+                }*/
+                
+                System.out.println("Insert fake card?");
+                genclass.GenericIO.readlnString();
+                
                 
                 System.out.println("new card inserted");
                 
                 //get data
                 //CardData card = ccIO.RunAnalisys(current_card_photo_path);
                 
-                CardData card = RandomCard_selector.getRandomCard(databasePath);
-                
+                //CardData card = RandomCard_selector.getRandomCard(databasePath);
+                CardData card = RandomCard_selector.notRandom(databasePath);
 /*
                 
                 if (card == null) {
@@ -195,8 +199,8 @@ public class CC_brain {
 
                 
                 //wait for random time
-                nowTime = System.currentTimeMillis();
-                timeToWait = (5 + new Random().nextInt(5)) * 1000;
+                /*nowTime = System.currentTimeMillis();
+                timeToWait = (10 + new Random().nextInt(10)) * 1000;
                 
                 while(System.currentTimeMillis() < nowTime+timeToWait)
                 {
@@ -205,7 +209,10 @@ public class CC_brain {
                     } catch (InterruptedException ex) {
                         Logger.getLogger(CC_brain.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
+                }*/
+                
+                System.out.println("Remove fake card?");
+                genclass.GenericIO.readlnString();
                 
                 //send card removed info to server & database
                 //sendToServerRabbitMQ(card, "removed");

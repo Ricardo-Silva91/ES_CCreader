@@ -117,7 +117,7 @@ public class Simple_receiver {
             if(rabbit_person.getInteraction().equals("inserted"))
                 db.update_curent_card(rabbit_person.getPerson_id());
             else
-                db.update_curent_card("dummy");
+                db.update_curent_card("1");
             
             db.connection_close();
 

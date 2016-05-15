@@ -142,7 +142,7 @@ public class UserPage_servlet extends HttpServlet {
                 out.println("<title>Error Page</title>");
                 out.println("</head>");
                 out.println("<body>");
-                out.println("<h1>Sorry, but there is no card in the reader</h1>");
+                out.println("<h1 id=\"greets\" >Sorry, but there is no card in the reader</h1>");
 
                 out.println(" <b> Please insert Citizen card in the reader and try again </b><br />");
 

@@ -31,5 +31,22 @@ public class RandomCard_selector {
         return card;
     }
     
+    public static CardData notRandom(String daString)
+    {
+        Database_connector_sqlite db = new Database_connector_sqlite();
+        
+        Random rand = new Random();
+        
+        int cardId = rand.nextInt(5-2) +2;
+        System.err.println(cardId);
+                
+        db.connect(daString);
+        CardData card;
+        card = db.getInfoByIID(Integer.toString(2));
+        db.connection_close();
+        
+        return card;
+    }
+    
     
 }

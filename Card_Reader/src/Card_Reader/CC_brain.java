@@ -123,8 +123,9 @@ public class CC_brain {
      */
     public static void main(String[] args) {
 
-        if (args.length > 0) {
+        if (args.length == 2) {
             serverIP = args[0];
+            roomCode = args[1];
         }
 
         int flag = 0;

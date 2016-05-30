@@ -7,7 +7,7 @@ sqlite3 ~/es_module.db < new_db_sqlite.sql
 if [ "$#" -ne 0 ]; then
 
 	#start local card reader app
-	xterm -n "Card_Reader" -e java -jar Card_Reader.jar $1 &
+	xterm -n "Card_Reader" -e java -jar Card_Reader.jar $1 $2 &
 
 else
 
